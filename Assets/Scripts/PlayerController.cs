@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
+	public GameObject instructions;
+
 	public float attackRate;
 	public float moveSpeed;
 	public float fuelAmount;
@@ -16,8 +18,9 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D rb2d;
 	private bool gameEnded = false;
 	private int enemyCount;
-	private float fuelDepletionRateMoving;
-	private float fuelDepletionRateStationary;
+
+	public float fuelDepletionRateMoving;
+	public float fuelDepletionRateStationary;
 
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
@@ -31,11 +34,14 @@ public class PlayerController : MonoBehaviour {
 		winText.text = "";
 		fuelText.text = fuelAmount.ToString ();
 		gameEnded = false;
-		fuelDepletionRateStationary = 0.01f;
-		fuelDepletionRateMoving = fuelDepletionRateStationary * 20;
+
 	}
 
 	void Update() {
+		if (instructions.gameObject.activeInHierarchy && Input.anyKeyDown) {
+			instructions.gameObject.SetActive (false);
+		}
+
 		if (gameEnded && Input.GetKeyDown ("r")) {
 			SceneManager.LoadScene ("ReachTheGoal");
 		}
@@ -48,6 +54,9 @@ public class PlayerController : MonoBehaviour {
 		
 	void FixedUpdate()
 	{
+		if (instructions.gameObject.activeInHierarchy) {
+			return;
+		}
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 
