@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class Generator : MonoBehaviour {
 
@@ -9,6 +10,9 @@ public class Generator : MonoBehaviour {
 	public float enemiesPerSecond;
 	private float secondsPerEnemy;
 	private float countdownToNextSpawn;
+
+	private int environmentDegradation = 0;
+	private int prevEnemyCount = 0;
 
 	public GameObject enemyPrefab;
  //	public GameObject groundPlane;
@@ -24,21 +28,29 @@ public class Generator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		secondsPerEnemy = 1f / enemiesPerSecond;
-		countdownToNextSpawn = secondsPerEnemy;
+		ResetSpawnEnemyProperties ();
 		inGameObjects = new List<GameObject> ();
 
 		inGameObjects.Add (GameObject.FindGameObjectWithTag (TAG_FINISH));
 		inGameObjects.Add (GameObject.FindGameObjectWithTag (TAG_PLAYER));
 		inGameObjects.AddRange (GameObject.FindGameObjectsWithTag (TAG_FUEL));
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+//		Debug.Log (environmentDegradation);
 		if (instructions.gameObject.activeInHierarchy) {
 			return;
 		}
+
+		// increase enemy spawn rate every set number of obstacles player destroys
+		if (environmentDegradation % 5 == 4) {
+			environmentDegradation++;
+			enemiesPerSecond += 0.2f;
+			ResetSpawnEnemyProperties ();
+		}
+
 		countdownToNextSpawn -= Time.deltaTime;
 
 		if (countdownToNextSpawn <= 0) {
@@ -48,8 +60,10 @@ public class Generator : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		if (GameObject.FindGameObjectsWithTag(TAG_ENEMY).GetLength(0) < inGameObjects.Count ) {
+		if (GameObject.FindGameObjectsWithTag(TAG_ENEMY).GetLength(0) < prevEnemyCount ) {
 			enemySaturation = 0;
+			environmentDegradation++;
+			prevEnemyCount--;
 			
 		}
 	}
@@ -85,6 +99,13 @@ public class Generator : MonoBehaviour {
 		} else {
 			inGameObjects.Add (newEnemy);
 			enemySaturation = 0;
+			prevEnemyCount++;
 		}
 	}
+
+	private void ResetSpawnEnemyProperties () {
+		secondsPerEnemy = 1f / enemiesPerSecond;
+		countdownToNextSpawn = secondsPerEnemy;
+	}
+
 }
