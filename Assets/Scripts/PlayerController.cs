@@ -6,35 +6,44 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
 
 	public GameObject instructions;
-
-	public float attackRate;
-	public float moveSpeed;
-	public float fuelAmount;
-
-	public Text countdown;
-	public Text winText;
-	public Text fuelText;
+	public GameObject machineMenuCanvas;
 
 	private Rigidbody2D rb2d;
-	private bool gameEnded = false;
-	private int enemyCount;
 
-	public float fuelDepletionRateMoving;
-	public float fuelDepletionRateStationary;
+	public Text countdown;
+	public Text resultText;
+	public Text fuelText;
 
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
-	private string TAG_FUEL = "Fuel";
+
+	private static float CHARACTER_ATTACK_RATE_INITIAL = 2f;
+	private static float CHARACTER_MOVE_SPEED_INITIAL = 0.2f;
+	private static float FUEL_AMOUNT_DEPLETION_MOVING = 0.1f;
+	private static float FUEL_AMOUNT_DEPLETION_STATIONARY = 0.01f;
+	private static float FUEL_AMOUNT_INITIAL = 10f;
+	private static float FUEL_AMOUNT_REPLENISH = 5f;
+
+	public float currentFuelAmount = FUEL_AMOUNT_INITIAL;
+	public float currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
+	public float currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
+
+	private bool gameEnded = false;
+	private int enemyCount;
 
 
-	void Start()
-	{
+	void Start() {
 		rb2d = GetComponent<Rigidbody2D> ();
-		setCountText ();
-		winText.text = "";
-		fuelText.text = fuelAmount.ToString ();
-		gameEnded = false;
 
+		SetUpVariables ();
+	}
+
+	void SetUpVariables() {
+		SetCountText ();
+		resultText.text = "";
+		fuelText.text = currentFuelAmount.ToString ();
+		gameEnded = false;
+		machineMenuCanvas.gameObject.SetActive (false);
 	}
 
 	void Update() {
@@ -48,12 +57,11 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		setCountText ();
-		setFuelText ();
+		SetCountText ();
+		SetFuelText ();
 	}
 		
-	void FixedUpdate()
-	{
+	void FixedUpdate() {
 		if (instructions.gameObject.activeInHierarchy) {
 			return;
 		}
@@ -61,56 +69,70 @@ public class PlayerController : MonoBehaviour {
 		float moveVertical = Input.GetAxis ("Vertical");
 
 		Vector3 oldPosition = transform.position;
-		Vector3 moveDistance = new Vector3 (moveHorizontal * moveSpeed, moveVertical * moveSpeed);
+		Vector3 moveDistance = new Vector3 (moveHorizontal * currentMoveSpeed, moveVertical * currentMoveSpeed);
 
-		if (moveDistance.magnitude == 0) {			
-			fuelAmount -= fuelDepletionRateStationary;
+		currentFuelAmount -= FUEL_AMOUNT_DEPLETION_STATIONARY;
 
-		} else {
+		if (moveDistance.magnitude != 0) {
 			rb2d.MovePosition (oldPosition + moveDistance);
-			fuelAmount -= moveDistance.magnitude * fuelDepletionRateMoving;
+			currentFuelAmount -= moveDistance.magnitude * FUEL_AMOUNT_DEPLETION_MOVING;
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
 		if (other.gameObject.CompareTag (TAG_FINISH)) {
-			winText.gameObject.SetActive (true);	
-
-			winText.text = "You win!\nPress 'r' for replay.";
-			gameEnd ();
-
-		} else if (other.gameObject.CompareTag (TAG_FUEL)) {
-			fuelAmount += other.gameObject.GetComponent<FuelController> ().amount;
-			Destroy (other.gameObject);
+			WinGame ();
+			return;
 		}
+
+		other.gameObject.SendMessage ("TakeFuel", gameObject, SendMessageOptions.DontRequireReceiver);
 	}
 
 	void OnCollisionStay2D(Collision2D other) {
-		if (other.gameObject.CompareTag (TAG_ENEMY)) {
-			other.gameObject.GetComponent<EnemyController> ().hp -= Time.deltaTime * attackRate ;
-		}
+		other.gameObject.SendMessage ("TakeDamage", currentAttackRate, SendMessageOptions.DontRequireReceiver);
 	}
 
-	void setCountText() {
+	private void SetCountText() {
 		enemyCount = GameObject.FindGameObjectsWithTag (TAG_ENEMY).Length;
 		countdown.text = "Count: " + enemyCount.ToString() + " obstacles left";
 	}
 
-	void setFuelText() {
-		fuelText.text = fuelAmount.ToString ();
-		if (fuelAmount <= 0) {
-			winText.text = "You lose!\nPress 'r' for replay.";
-			gameEnd ();
+	private void SetFuelText() {
+		fuelText.text = "Remaining fuel amount: " + currentFuelAmount.ToString ();
+		if (currentFuelAmount <= 0) {
+			LoseGame ();
 		}
 	}
 
-	void moveUsingFuel() {
-		
+	private void SetGameEndStatus() {
+		gameEnded = true;
+		PauseGame ();
 	}
 
-	void gameEnd() {
-		gameEnded = true;
-		moveSpeed = 0;
-		fuelDepletionRateStationary = 0;
+	void LoseGame() {
+		resultText.text = "You lose!\nPress 'r' for replay.";
+		SetGameEndStatus ();
+	}
+
+	void WinGame() {
+		resultText.text = "You win!\nPress 'r' for replay.";
+		SetGameEndStatus ();
+
+	}
+
+	void IncreaseMoveSpeed() {
+		currentMoveSpeed += 0.2f;
+	}
+
+	void ReplenishFuel() {
+		currentFuelAmount += FUEL_AMOUNT_REPLENISH;
+	}
+
+	void AddFuel(float fuelAmount) {
+		currentFuelAmount += fuelAmount;
+	}
+
+	void PauseGame() {
+		Time.timeScale = 0;
 	}
 }

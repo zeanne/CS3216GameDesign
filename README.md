@@ -9,12 +9,8 @@ Developing + learning usage of basic features of Unity.
 
 Game is a 2D side scroller, where player’s objective is to reach the endpoint.
 
-Last Progress:
-- Added 
 
-
-
-** I do not own any of the images currently used as placeholders **
+** I do not own any of the images used **
 
 ** Credits to my team mates for our shared ideas **
 ** Credits to my team mates for the final images used **

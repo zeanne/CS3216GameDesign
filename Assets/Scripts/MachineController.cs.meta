@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: a01ec85c62421488b913c4c2300e067b
+timeCreated: 1476297484
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - sparksPrefab: {fileID: 197494, guid: 8af7fc23449fb134587debd98a00604a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

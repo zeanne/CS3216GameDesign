@@ -23,7 +23,10 @@ public class EnemyController : MonoBehaviour {
 		this.gameObject.GetComponent<SpriteRenderer> ().color = tempColor;
 	}
 
-	void OnCollisionStay2D(Collision2D other) {
-		currentHp -= Time.deltaTime * other.gameObject.GetComponent<PlayerController> ().currentAttackRate;
+	void TakeDamage(float playerAttackRate) {
+		currentHp -= Time.deltaTime * playerAttackRate;
 	}
+//	void OnCollisionStay2D(Collision2D other) {
+//		currentHp -= Time.deltaTime * other.gameObject.GetComponent<PlayerController> ().currentAttackRate;
+//	}
 }
