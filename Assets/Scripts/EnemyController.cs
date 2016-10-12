@@ -4,24 +4,26 @@ using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour {
 
-	public float hp;
-//	public GameObject hpTextObject;
-
-	private Text hpText;
-
+	public float INITIAL_HP;
+	private float currentHp;
 
 	void Start () {
-//		hpText = (Text)hpTextObject.GetComponent<Text> ();
+		currentHp = INITIAL_HP;
 	}
 
 	void Update () {
-		if (hp <= 0) {
+		if (currentHp <= 0) {
 			Destroy (this.gameObject);
-//			hpText.text = "0";
 		}
 	}
 
-	void OnCollisionStay2D() {
-//		hpText.text = hp.ToString();
+	void LateUpdate() {
+		Color tempColor = this.gameObject.GetComponent<SpriteRenderer> ().color;
+		tempColor.a = currentHp / INITIAL_HP;
+		this.gameObject.GetComponent<SpriteRenderer> ().color = tempColor;
+	}
+
+	void OnCollisionStay2D(Collision2D other) {
+		currentHp -= Time.deltaTime * other.gameObject.GetComponent<PlayerController> ().currentAttackRate;
 	}
 }
