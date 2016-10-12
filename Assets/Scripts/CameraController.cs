@@ -3,24 +3,6 @@ using System.Collections;
 
 public class CameraController : MonoBehaviour {
 
-//	public GameObject player;
-//
-//	// Use this for initialization
-//	void Start () {
-//	
-//	}
-//	
-//	// Update is called once per frame
-//	void Update () {
-//		
-//	}
-//
-//	void LateUpdate () {
-//		transform.position = player.transform.position;
-//	}
-
-
-
 	public GameObject player;       //Public variable to store a reference to the player game object
 
 
@@ -39,12 +21,12 @@ public class CameraController : MonoBehaviour {
 	{
 		// Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
 		Vector3 newPosition = player.transform.position + offset;
-		newPosition.y = 0;
-		if (newPosition.x < -20) {
-			newPosition.x = -20;
-		} else if (newPosition.x > 20) {
-			newPosition.x = 20;
-		}
+//		newPosition.y = 0;
+//		if (newPosition.x < -20) {
+//			newPosition.x = -20;
+//		} else if (newPosition.x > 600) {
+//			newPosition.x = 20;
+//		}
 
 		transform.position = newPosition;
 	}
