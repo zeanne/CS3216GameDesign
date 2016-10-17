@@ -12,9 +12,7 @@ public class PlayerController : MonoBehaviour {
 
 	private Rigidbody2D rb2d;
 
-//	public Text countdown;
 	public Text resultText;
-//	public Text fuelText;
 
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
@@ -48,9 +46,7 @@ public class PlayerController : MonoBehaviour {
 		currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
 		currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
 
-		SetCountText ();
 		resultText.text = "";
-		fuelText.text = currentFuelAmount.ToString ();
 		gameEnded = false;
 		machineMenuCanvas.gameObject.SetActive (false);
 	}
@@ -66,8 +62,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		SetCountText ();
-		SetFuelText ();
+		SetFuelBar ();
 	}
 
 	void FixedUpdate() {
@@ -101,14 +96,8 @@ public class PlayerController : MonoBehaviour {
 		other.gameObject.SendMessage ("TakeDamage", currentAttackRate, SendMessageOptions.DontRequireReceiver);
 	}
 
-//	private void SetCountText() {
-//		enemyCount = GameObject.FindGameObjectsWithTag (TAG_ENEMY).Length;
-//		countdown.text = "Count: " + enemyCount.ToString() + " obstacles left";
-//	}
-
-	private void SetFuelText() {
+	private void SetFuelBar() {
 		fuelBar.value = currentFuelAmount / FUEL_AMOUNT_INITIAL;
-//		fuelText.text = "Remaining fuel amount: " + currentFuelAmount.ToString ();
 		if (currentFuelAmount <= 0) {
 			LoseGame ();
 		}

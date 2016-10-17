@@ -114,7 +114,7 @@ public class Generator : MonoBehaviour {
 	Vector3 getNewEnemyPosition() {
 		Vector3 newPosition = new Vector3 ();
 		if (Random.value * 100 < 80) {
-			// 75% chance of spawning obstacle in the same map.
+			// 80% chance of spawning obstacle in the same screen.
 			GameObject player = GameObject.FindGameObjectWithTag (TAG_PLAYER);
 			newPosition.x = Random.Range (player.transform.position.x, player.transform.position.x + SCREENSIZE);
 			newPosition.y = Random.Range (ENEMY_RANGE_Y_MIN, ENEMY_RANGE_Y_MAX);

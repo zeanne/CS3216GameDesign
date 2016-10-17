@@ -16,7 +16,6 @@ public class MachineController : MonoBehaviour {
 	void Start() {
 		machineMenuCanvas = GameObject.Find ("MachineMenu");
 		player = GameObject.Find ("Player");
-//		noActionBtn = machineMenuCanvas.GetComponentsInChildren<Button> ()[0];
 		noActionBtn = GameObject.Find ("DoNothingButton").GetComponent<Button> ();
 		addFuelBtn = GameObject.Find ("ReplenishFuelButton").GetComponent<Button> ();
 		addSpeedBtn = GameObject.Find ("BoostSpeedButton").GetComponent<Button> ();
@@ -29,8 +28,6 @@ public class MachineController : MonoBehaviour {
 			return;
 		}
 
-//		Vector3 currentPosition = this.transform.position;
-//		currentPosition.z = -1;
 		PauseGame ();
 		hasBeenTriggered = true;
 		machineMenuCanvas.gameObject.SetActive (true);

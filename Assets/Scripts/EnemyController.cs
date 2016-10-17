@@ -26,7 +26,4 @@ public class EnemyController : MonoBehaviour {
 	void TakeDamage(float playerAttackRate) {
 		currentHp -= Time.deltaTime * playerAttackRate;
 	}
-//	void OnCollisionStay2D(Collision2D other) {
-//		currentHp -= Time.deltaTime * other.gameObject.GetComponent<PlayerController> ().currentAttackRate;
-//	}
 }
