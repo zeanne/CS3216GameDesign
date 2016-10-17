@@ -11,17 +11,21 @@ public class Generator : MonoBehaviour {
 	private float secondsPerEnemy;
 	private float countdownToNextSpawn;
 
+	private float ENEMY_RANGE_X_MIN;
+	private float ENEMY_RANGE_X_MAX;
+	private float ENEMY_RANGE_Y_MIN;
+	private float ENEMY_RANGE_Y_MAX;
+	private float SCREENSIZE = 25;
+
 	private int environmentDegradation = 0;
-	private int prevEnemyCount = 0;
 
 	public GameObject enemyPrefab;
  //	public GameObject groundPlane;
 
 	private List<GameObject> inGameObjects;
 	private int enemySaturation = 0;
-	private int ENEMY_SATURATION_LIMIT = 4;
+	private int ENEMY_SATURATION_LIMIT = 5;
 
-	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
 	private string TAG_FUEL = "Fuel";
 	private string TAG_PLAYER = "Player";
@@ -59,15 +63,6 @@ public class Generator : MonoBehaviour {
 		}
 	}
 
-	void LateUpdate() {
-		if (GameObject.FindGameObjectsWithTag(TAG_ENEMY).GetLength(0) < prevEnemyCount ) {
-			enemySaturation = 0;
-			environmentDegradation++;
-			prevEnemyCount--;
-			
-		}
-	}
-
 	void CreateNewEnemy() {
 
 		if (enemySaturation == ENEMY_SATURATION_LIMIT) {
@@ -75,9 +70,10 @@ public class Generator : MonoBehaviour {
 		}
 
 		bool intersecting = false;
-
-		GameObject newEnemy = (GameObject) Instantiate(enemyPrefab, 
-			new Vector3 (Random.Range (-20f, 20f), Random.Range (-2f, 3.5f), 0), Quaternion.identity);
+		Vector3 newEnemyPosition = getNewEnemyPosition ();
+		GameObject newEnemy = (GameObject) Instantiate(enemyPrefab, newEnemyPosition, Quaternion.identity);
+		
+		newEnemy.gameObject.transform.SetParent (this.transform);
 
 		for (int i = 0; i < inGameObjects.Count; i++) {
 
@@ -99,7 +95,6 @@ public class Generator : MonoBehaviour {
 		} else {
 			inGameObjects.Add (newEnemy);
 			enemySaturation = 0;
-			prevEnemyCount++;
 		}
 	}
 
@@ -108,4 +103,26 @@ public class Generator : MonoBehaviour {
 		countdownToNextSpawn = secondsPerEnemy;
 	}
 
+	// xyvalues -> xmin, xmax, ymin, ymax
+	public void SetInstantiateRange(Vector4 xyvalues) {
+		ENEMY_RANGE_X_MIN = xyvalues.x;
+		ENEMY_RANGE_X_MAX = xyvalues.y;
+		ENEMY_RANGE_Y_MIN = xyvalues.z;
+		ENEMY_RANGE_Y_MAX = xyvalues.w;
+	}
+
+	Vector3 getNewEnemyPosition() {
+		Vector3 newPosition = new Vector3 ();
+		if (Random.value * 100 < 80) {
+			// 75% chance of spawning obstacle in the same map.
+			GameObject player = GameObject.FindGameObjectWithTag (TAG_PLAYER);
+			newPosition.x = Random.Range (player.transform.position.x, player.transform.position.x + SCREENSIZE);
+			newPosition.y = Random.Range (ENEMY_RANGE_Y_MIN, ENEMY_RANGE_Y_MAX);
+
+		} else {
+			newPosition = new Vector3 (Random.Range (ENEMY_RANGE_X_MIN, ENEMY_RANGE_X_MAX), Random.Range (ENEMY_RANGE_Y_MIN, ENEMY_RANGE_Y_MAX), 0);		
+		}
+			
+		return newPosition;
+	}
 }

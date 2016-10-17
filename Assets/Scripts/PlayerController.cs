@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -7,38 +8,46 @@ public class PlayerController : MonoBehaviour {
 
 	public GameObject instructions;
 	public GameObject machineMenuCanvas;
+	public Slider fuelBar;
 
 	private Rigidbody2D rb2d;
 
-	public Text countdown;
+//	public Text countdown;
 	public Text resultText;
-	public Text fuelText;
+//	public Text fuelText;
 
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
 
-	private static float CHARACTER_ATTACK_RATE_INITIAL = 2f;
-	private static float CHARACTER_MOVE_SPEED_INITIAL = 0.2f;
-	private static float FUEL_AMOUNT_DEPLETION_MOVING = 0.1f;
-	private static float FUEL_AMOUNT_DEPLETION_STATIONARY = 0.01f;
-	private static float FUEL_AMOUNT_INITIAL = 10f;
-	private static float FUEL_AMOUNT_REPLENISH = 5f;
+	private static float CHARACTER_ATTACK_RATE_INITIAL;
+	private static float CHARACTER_MOVE_SPEED_INITIAL;
+	private static float CHARACTER_MOVE_SPEED_BOOST;
+	private static float FUEL_AMOUNT_DEPLETION_MOVING;
+	private static float FUEL_AMOUNT_DEPLETION_STATIONARY;
+	private static float FUEL_AMOUNT_INITIAL;
+	private static float FUEL_AMOUNT_REPLENISH;
 
-	public float currentFuelAmount = FUEL_AMOUNT_INITIAL;
-	public float currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
-	public float currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
+	public float currentFuelAmount;
+	public float currentMoveSpeed;
+	public float currentAttackRate;
 
 	private bool gameEnded = false;
 	private int enemyCount;
 
 
 	void Start() {
-		rb2d = GetComponent<Rigidbody2D> ();
+		Time.timeScale = 1;
 
+		rb2d = GetComponent<Rigidbody2D> ();
 		SetUpVariables ();
+
 	}
 
 	void SetUpVariables() {
+		currentFuelAmount = FUEL_AMOUNT_INITIAL;
+		currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
+		currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
+
 		SetCountText ();
 		resultText.text = "";
 		fuelText.text = currentFuelAmount.ToString ();
@@ -60,7 +69,7 @@ public class PlayerController : MonoBehaviour {
 		SetCountText ();
 		SetFuelText ();
 	}
-		
+
 	void FixedUpdate() {
 		if (instructions.gameObject.activeInHierarchy) {
 			return;
@@ -71,11 +80,11 @@ public class PlayerController : MonoBehaviour {
 		Vector3 oldPosition = transform.position;
 		Vector3 moveDistance = new Vector3 (moveHorizontal * currentMoveSpeed, moveVertical * currentMoveSpeed);
 
-		currentFuelAmount -= FUEL_AMOUNT_DEPLETION_STATIONARY;
+		currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_STATIONARY;
 
 		if (moveDistance.magnitude != 0) {
 			rb2d.MovePosition (oldPosition + moveDistance);
-			currentFuelAmount -= moveDistance.magnitude * FUEL_AMOUNT_DEPLETION_MOVING;
+			currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_MOVING;
 		}
 	}
 
@@ -92,13 +101,14 @@ public class PlayerController : MonoBehaviour {
 		other.gameObject.SendMessage ("TakeDamage", currentAttackRate, SendMessageOptions.DontRequireReceiver);
 	}
 
-	private void SetCountText() {
-		enemyCount = GameObject.FindGameObjectsWithTag (TAG_ENEMY).Length;
-		countdown.text = "Count: " + enemyCount.ToString() + " obstacles left";
-	}
+//	private void SetCountText() {
+//		enemyCount = GameObject.FindGameObjectsWithTag (TAG_ENEMY).Length;
+//		countdown.text = "Count: " + enemyCount.ToString() + " obstacles left";
+//	}
 
 	private void SetFuelText() {
-		fuelText.text = "Remaining fuel amount: " + currentFuelAmount.ToString ();
+		fuelBar.value = currentFuelAmount / FUEL_AMOUNT_INITIAL;
+//		fuelText.text = "Remaining fuel amount: " + currentFuelAmount.ToString ();
 		if (currentFuelAmount <= 0) {
 			LoseGame ();
 		}
@@ -120,10 +130,12 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+	// Machine Boost
 	void IncreaseMoveSpeed() {
-		currentMoveSpeed += 0.2f;
+		currentMoveSpeed += CHARACTER_MOVE_SPEED_BOOST;
 	}
 
+	// Machine Boost
 	void ReplenishFuel() {
 		currentFuelAmount += FUEL_AMOUNT_REPLENISH;
 	}
@@ -134,5 +146,27 @@ public class PlayerController : MonoBehaviour {
 
 	void PauseGame() {
 		Time.timeScale = 0;
+	}
+
+	void SetInitialValues(float[] playerValues) {
+		// 0 - CHARACTER_ATTACK_RATE_INITIAL, 
+		// 1 - CHARACTER_MOVE_SPEED_INITIAL, 
+		// 2 - CHARACTER_MOVE_SPEED_BOOST, 
+		// 3 - FUEL_AMOUNT_DEPLETION_MOVING,
+		// 4 - FUEL_AMOUNT_DEPLETION_STATIONARY,
+		// 5 - FUEL_AMOUNT_INITIAL,
+		// 6 - FUEL_AMOUNT_REPLENISH
+
+		if (playerValues.Length != 7) {
+			Debug.Log ("EERRRORORORROROROR");
+		}
+
+		CHARACTER_ATTACK_RATE_INITIAL = playerValues [0];
+		CHARACTER_MOVE_SPEED_INITIAL = playerValues [1];
+		CHARACTER_MOVE_SPEED_BOOST = playerValues [2];
+		FUEL_AMOUNT_DEPLETION_MOVING = playerValues [3];
+		FUEL_AMOUNT_DEPLETION_STATIONARY = playerValues [4];
+		FUEL_AMOUNT_INITIAL = playerValues [5];
+		FUEL_AMOUNT_REPLENISH = playerValues [6];
 	}
 }
