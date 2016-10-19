@@ -14,13 +14,13 @@ public class MachineController : MonoBehaviour {
 	private Button addSpeedBtn;
 
 	void Start() {
-		machineMenuCanvas = GameObject.Find ("MachineMenu");
-		player = GameObject.Find ("Player");
-		noActionBtn = GameObject.Find ("DoNothingButton").GetComponent<Button> ();
-		addFuelBtn = GameObject.Find ("ReplenishFuelButton").GetComponent<Button> ();
-		addSpeedBtn = GameObject.Find ("BoostSpeedButton").GetComponent<Button> ();
-
-		AddButtonListeners ();
+//		machineMenuCanvas = GameObject.Find ("MachineMenu");
+//		player = GameObject.Find ("Player");
+//		noActionBtn = GameObject.Find ("DoNothingButton").GetComponent<Button> ();
+//		addFuelBtn = GameObject.Find ("ReplenishFuelButton").GetComponent<Button> ();
+//		addSpeedBtn = GameObject.Find ("BoostSpeedButton").GetComponent<Button> ();
+//
+//		AddButtonListeners ();
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
@@ -74,5 +74,16 @@ public class MachineController : MonoBehaviour {
 
 	void SendMessageIncreaseSpeed() {
 		player.gameObject.SendMessage ("IncreaseMoveSpeed");
+	}
+
+	void InitialiseMenuObjects() {
+		machineMenuCanvas = GameObject.Find ("MachineMenu");
+		player = GameObject.Find ("Player");
+		noActionBtn = GameObject.Find ("DoNothingButton").GetComponent<Button> ();
+		addFuelBtn = GameObject.Find ("ReplenishFuelButton").GetComponent<Button> ();
+		addSpeedBtn = GameObject.Find ("BoostSpeedButton").GetComponent<Button> ();
+
+		AddButtonListeners ();
+
 	}
 }

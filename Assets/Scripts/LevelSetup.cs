@@ -18,7 +18,7 @@ public class LevelSetup : MonoBehaviour {
 
 	float WALL_THICKNESS = 10f;
 	float FLOOR_EXTRA = 30f;
-	float MACHINE_DISTANCE = 30f;
+	float MACHINE_DISTANCE = 50f;
 	float MACHINE_HEIGHT = 2f;
 	float GOAL_HEIGHT = 2f;
 //	float GOAL_WIDTH = 2f;
@@ -53,11 +53,14 @@ public class LevelSetup : MonoBehaviour {
 
 		Instantiate(goal, new Vector3(width - WALL_THICKNESS, Random.Range(WALL_THICKNESS, height-WALL_THICKNESS), 0), Quaternion.identity);
 
-//		float i = FLOOR_EXTRA;
-//		while (i < width - FLOOR_EXTRA) {
-//			Instantiate (machinePrefab, new Vector3 (i, WALL_THICKNESS/2 + MACHINE_HEIGHT, 0), Quaternion.identity);
-//			i += MACHINE_DISTANCE;
-//		} 
+		GameObject newMachine;
+		float i = FLOOR_EXTRA;
+		while (i < width - FLOOR_EXTRA) {
+			newMachine = (GameObject) Instantiate (machinePrefab, new Vector3 (i, WALL_THICKNESS/2 + MACHINE_HEIGHT, 0), Quaternion.identity);
+			newMachine.SendMessage ("InitialiseMenuObjects");
+			i += MACHINE_DISTANCE;
+		} 
+
 		generator.gameObject.SendMessage ("SetInstantiateRange", new Vector4(FLOOR_EXTRA, width - WALL_THICKNESS, WALL_THICKNESS, height - WALL_THICKNESS/2), SendMessageOptions.DontRequireReceiver);
 	}
 
@@ -70,15 +73,16 @@ public class LevelSetup : MonoBehaviour {
 		// 3 - FUEL_AMOUNT_DEPLETION_MOVING,
 		// 4 - FUEL_AMOUNT_DEPLETION_STATIONARY, 
 		// 5 - FUEL_AMOUNT_INITIAL,
-		// 6 - FUEL_AMOUNT_REPLENISH
+		// 6 - FUEL_AMOUNT_REPLENISH,
+		// 7 - FUEL_AMOUNT_MAX
 
 		switch(level) {
 		case 1: 
-			return new float[] { 2f, 0.2f, 0.05f, 1f, 0.1f, 20f, 5f };
+			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.2f, 20f, 5f, 20f };
 		case 2:
-			return new float[] { 2f, 0.2f, 0.05f, 1f, 0.1f, 10f, 5f };
+			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.2f, 10f, 5f, 20f };
 		default:
-			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.1f, 10f, 5f };
+			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.2f, 10f, 5f, 20f };
 		}
 	}
 }

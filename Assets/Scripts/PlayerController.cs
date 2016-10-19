@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	private static float FUEL_AMOUNT_DEPLETION_MOVING;
 	private static float FUEL_AMOUNT_DEPLETION_STATIONARY;
 	private static float FUEL_AMOUNT_INITIAL;
+	private static float FUEL_AMOUNT_MAX;
 	private static float FUEL_AMOUNT_REPLENISH;
 
 	public float currentFuelAmount;
@@ -127,10 +128,13 @@ public class PlayerController : MonoBehaviour {
 	// Machine Boost
 	void ReplenishFuel() {
 		currentFuelAmount += FUEL_AMOUNT_REPLENISH;
+		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
 	}
 
 	void AddFuel(float fuelAmount) {
 		currentFuelAmount += fuelAmount;
+		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
+
 	}
 
 	void PauseGame() {
@@ -144,9 +148,10 @@ public class PlayerController : MonoBehaviour {
 		// 3 - FUEL_AMOUNT_DEPLETION_MOVING,
 		// 4 - FUEL_AMOUNT_DEPLETION_STATIONARY,
 		// 5 - FUEL_AMOUNT_INITIAL,
-		// 6 - FUEL_AMOUNT_REPLENISH
+		// 6 - FUEL_AMOUNT_REPLENISH,
+		// 7 - FUEL_AMOUNT_MAX
 
-		if (playerValues.Length != 7) {
+		if (playerValues.Length != 8) {
 			Debug.Log ("EERRRORORORROROROR");
 		}
 
@@ -157,5 +162,6 @@ public class PlayerController : MonoBehaviour {
 		FUEL_AMOUNT_DEPLETION_STATIONARY = playerValues [4];
 		FUEL_AMOUNT_INITIAL = playerValues [5];
 		FUEL_AMOUNT_REPLENISH = playerValues [6];
+		FUEL_AMOUNT_MAX = playerValues [7];
 	}
 }
