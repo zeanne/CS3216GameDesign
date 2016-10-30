@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Generator : MonoBehaviour {
 
-	public GameObject instructions;
+//	public GameObject instructions;
 
 	public float enemiesPerSecond;
 	private float secondsPerEnemy;
@@ -44,9 +44,9 @@ public class Generator : MonoBehaviour {
 	void Update () {
 
 //		Debug.Log (environmentDegradation);
-		if (instructions.gameObject.activeInHierarchy) {
-			return;
-		}
+//		if (instructions.gameObject.activeInHierarchy) {
+//			return;
+//		}
 
 		// increase enemy spawn rate every set number of obstacles player destroys
 		if (environmentDegradation % 5 == 4) {

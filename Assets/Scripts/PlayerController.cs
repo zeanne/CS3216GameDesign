@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
-	public GameObject instructions;
+//	public GameObject instructions;
 	public GameObject machineMenuCanvas;
 	public Slider fuelBar;
 
@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour {
 
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
+	private string TAG_FUEL = "Fuel";
+	private string TAG_MACHINE = "Machine";
 
 	private static float CHARACTER_ATTACK_RATE_INITIAL;
 	private static float CHARACTER_MOVE_SPEED_INITIAL;
@@ -53,9 +55,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update() {
-		if (instructions.gameObject.activeInHierarchy && Input.anyKeyDown) {
-			instructions.gameObject.SetActive (false);
-		}
+//		if (instructions.gameObject.activeInHierarchy && Input.anyKeyDown) {
+//			instructions.gameObject.SetActive (false);
+//		}
 
 		if (gameEnded && Input.GetKeyDown ("r")) {
 			SceneManager.LoadScene ("ReachTheGoal");
@@ -67,9 +69,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		if (instructions.gameObject.activeInHierarchy) {
-			return;
-		}
+//		if (instructions.gameObject.activeInHierarchy) {
+//			return;
+//		}
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 
