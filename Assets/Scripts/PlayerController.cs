@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
 	private static float CHARACTER_ATTACK_RATE_INITIAL;
 	private static float CHARACTER_MOVE_SPEED_INITIAL;
 	private static float CHARACTER_MOVE_SPEED_BOOST;
+	private static float CHARACTER_MOVE_SPEED_MAX;
 	private static float FUEL_AMOUNT_DEPLETION_MOVING;
 	private static float FUEL_AMOUNT_DEPLETION_STATIONARY;
 	private static float FUEL_AMOUNT_INITIAL;
@@ -60,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 //		}
 
 		if (gameEnded && Input.GetKeyDown ("r")) {
-			SceneManager.LoadScene ("ReachTheGoal");
+			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 		}
 	}
 
@@ -125,6 +126,7 @@ public class PlayerController : MonoBehaviour {
 	// Machine Boost
 	void IncreaseMoveSpeed() {
 		currentMoveSpeed += CHARACTER_MOVE_SPEED_BOOST;
+		currentMoveSpeed = Mathf.Min (CHARACTER_MOVE_SPEED_MAX, currentMoveSpeed);
 	}
 
 	// Machine Boost
@@ -151,15 +153,17 @@ public class PlayerController : MonoBehaviour {
 		// 4 - FUEL_AMOUNT_DEPLETION_STATIONARY,
 		// 5 - FUEL_AMOUNT_INITIAL,
 		// 6 - FUEL_AMOUNT_REPLENISH,
-		// 7 - FUEL_AMOUNT_MAX
+		// 7 - FUEL_AMOUNT_MAX,
+		// 8 - CHARACTER_MOVE_SPEED_MAX
 
-		if (playerValues.Length != 8) {
+		if (playerValues.Length != 9) {
 			Debug.Log ("EERRRORORORROROROR");
 		}
 
 		CHARACTER_ATTACK_RATE_INITIAL = playerValues [0];
 		CHARACTER_MOVE_SPEED_INITIAL = playerValues [1];
 		CHARACTER_MOVE_SPEED_BOOST = playerValues [2];
+		CHARACTER_MOVE_SPEED_MAX = playerValues [8];
 		FUEL_AMOUNT_DEPLETION_MOVING = playerValues [3];
 		FUEL_AMOUNT_DEPLETION_STATIONARY = playerValues [4];
 		FUEL_AMOUNT_INITIAL = playerValues [5];

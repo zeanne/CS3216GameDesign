@@ -15,6 +15,7 @@ public class LevelSetup : MonoBehaviour {
 
 	public int height;
 	public int width;
+	public int level;
 
 	float WALL_THICKNESS = 10f;
 	float FLOOR_EXTRA = 30f;
@@ -28,30 +29,15 @@ public class LevelSetup : MonoBehaviour {
 //	// Use this for initialization
 	void Start () {
 
-		floor.transform.position = new Vector3 (width/2, height/2, 1);
-		floor.transform.localScale = new Vector3 (width + FLOOR_EXTRA, height + FLOOR_EXTRA, 1);
+		SetupPlayingSpace ();
 
-		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
-		wallsN.transform.position = new Vector3 (width/2, height, 0);
-		wallsN.transform.localScale = new Vector3 (width, WALL_THICKNESS, 1);
-
-		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
-		wallsS.transform.position = new Vector3 (width/2, 0, 1);
-		wallsS.transform.localScale = new Vector3 (width, -WALL_THICKNESS, 1);
-
-		wallsE.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (WALL_THICKNESS, height);
-		wallsE.transform.position = new Vector3 (width, height / 2, 0);
-		wallsE.transform.localScale = new Vector3 (WALL_THICKNESS/2, height, 1);
-
-		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (WALL_THICKNESS, height);
-		wallsW.transform.position = new Vector3 (0, height / 2, 0);
-		wallsW.transform.localScale = new Vector3 (WALL_THICKNESS/2, height, 1);
-
-		float[] playerValues = GetPlayerDefaultValues (1);
 		player.transform.position = new Vector3 (10, 10, 0);
+		float[] playerValues = GetPlayerDefaultValues (level);
 		player.SendMessage("SetInitialValues", playerValues, SendMessageOptions.RequireReceiver);
 
-		Instantiate(goal, new Vector3(width - WALL_THICKNESS, Random.Range(WALL_THICKNESS, height-WALL_THICKNESS), 0), Quaternion.identity);
+		if (level != 0) {
+			Instantiate (goal, new Vector3 (width - WALL_THICKNESS, Random.Range (WALL_THICKNESS, height - WALL_THICKNESS), 0), Quaternion.identity);
+		}
 
 		GameObject newMachine;
 		float i = FLOOR_EXTRA;
@@ -74,15 +60,40 @@ public class LevelSetup : MonoBehaviour {
 		// 4 - FUEL_AMOUNT_DEPLETION_STATIONARY, 
 		// 5 - FUEL_AMOUNT_INITIAL,
 		// 6 - FUEL_AMOUNT_REPLENISH,
-		// 7 - FUEL_AMOUNT_MAX
+		// 7 - FUEL_AMOUNT_MAX,
+		// 8 - CHARACTER_MOVE_SPEED_MAX
 
 		switch(level) {
+		case 0:
+			return new float[] { 2f, 0.4f, 0.025f, 0.5f, 0.1f, 20f, 5f, 20f, 1.5f };
 		case 1: 
-			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.2f, 20f, 5f, 20f };
+			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 20f, .5f, 20f, 1f };
 		case 2:
-			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.2f, 10f, 5f, 20f };
+			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 10f, 5f, 20f, 2f };
 		default:
-			return new float[] { 2f, 0.4f, 0.05f, 1f, 0.2f, 10f, 5f, 20f };
+			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 10f, 5f, 20f, 2f };
 		}
+	}
+
+	void SetupPlayingSpace() {
+		floor.transform.position = new Vector3 (width/2, height/2, 1);
+		floor.transform.localScale = new Vector3 (width + FLOOR_EXTRA, height + FLOOR_EXTRA, 1);
+
+		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
+		wallsN.transform.position = new Vector3 (width/2, height, 0);
+		wallsN.transform.localScale = new Vector3 (width, WALL_THICKNESS, 1);
+
+		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
+		wallsS.transform.position = new Vector3 (width/2, 0, 1);
+		wallsS.transform.localScale = new Vector3 (width, -WALL_THICKNESS, 1);
+
+		wallsE.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (WALL_THICKNESS, height);
+		wallsE.transform.position = new Vector3 (width, height / 2, 0);
+		wallsE.transform.localScale = new Vector3 (WALL_THICKNESS/2, height, 1);
+
+		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (WALL_THICKNESS, height);
+		wallsW.transform.position = new Vector3 (0, height / 2, 0);
+		wallsW.transform.localScale = new Vector3 (WALL_THICKNESS/2, height, 1);
+
 	}
 }
