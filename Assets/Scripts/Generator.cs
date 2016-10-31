@@ -26,6 +26,7 @@ public class Generator : MonoBehaviour {
 
 	private List<GameObject> inGameObjects;
 	private int enemySaturation = 0;
+	private int noEnemy = 0;
 	private int ENEMY_SATURATION_LIMIT = 5;
 
 	private string TAG_FINISH = "Finish";
@@ -62,7 +63,13 @@ public class Generator : MonoBehaviour {
 
 	void CreateNewEnemy() {
 
+		if (noEnemy == 4) {
+			enemySaturation = 0;
+			noEnemy = 0;
+		}
+
 		if (enemySaturation == ENEMY_SATURATION_LIMIT) {
+			noEnemy++;
 			return;
 		}
 
