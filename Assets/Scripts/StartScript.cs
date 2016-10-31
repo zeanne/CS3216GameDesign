@@ -39,6 +39,8 @@ public class StartScript : MonoBehaviour {
 				selectTextBox.gameObject.SetActive (false);
 				selectText.GetComponent<Text> ().text = "";
 
+				startText.GetComponent<Text> ().text = "- Press 'Enter' key to start -";
+
 			} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 				TogglePrev ();
 			} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
@@ -50,7 +52,7 @@ public class StartScript : MonoBehaviour {
 		} else {
 			if (Input.GetKeyDown(KeyCode.Return)) {
 				started = true;
-				startText.gameObject.SetActive (false);
+				startText.GetComponent<Text> ().text = "Navigate with < > arrow keys";
 				selectTextBox.gameObject.SetActive (true);
 				ToggleNext ();
 
