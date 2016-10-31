@@ -5,6 +5,7 @@ public class LevelSetup : MonoBehaviour {
 
 	public GameObject player;
 	public GameObject machinePrefab;
+	public GameObject fuelPrefab;
 	public GameObject generator;
 	public GameObject goal;
 	public GameObject floor;
@@ -19,7 +20,8 @@ public class LevelSetup : MonoBehaviour {
 
 	float WALL_THICKNESS = 10f;
 	float FLOOR_EXTRA = 30f;
-	float MACHINE_DISTANCE = 50f;
+	float MACHINE_DISTANCE = 150f;
+	float FUEL_DISTANCE = 50f;
 	float MACHINE_HEIGHT = 2f;
 	float GOAL_HEIGHT = 2f;
 //	float GOAL_WIDTH = 2f;
@@ -47,6 +49,13 @@ public class LevelSetup : MonoBehaviour {
 			i += MACHINE_DISTANCE;
 		} 
 
+		GameObject newFuel;
+		float j = FLOOR_EXTRA + 30;
+		while (j < width - FLOOR_EXTRA) {
+			newFuel = (GameObject) Instantiate (fuelPrefab, new Vector3 (j, Random.Range(8, 30), 0), Quaternion.identity);
+			j += FUEL_DISTANCE;
+		} 
+	
 		generator.gameObject.SendMessage ("SetInstantiateRange", new Vector4(FLOOR_EXTRA, width - WALL_THICKNESS, WALL_THICKNESS, height - WALL_THICKNESS/2), SendMessageOptions.DontRequireReceiver);
 	}
 

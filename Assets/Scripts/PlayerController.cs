@@ -93,7 +93,10 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 
-		other.gameObject.SendMessage ("TakeFuel", gameObject, SendMessageOptions.DontRequireReceiver);
+		if (other.gameObject.CompareTag (TAG_FUEL)) {
+			other.gameObject.SendMessage ("TakeFuel", gameObject, SendMessageOptions.DontRequireReceiver);
+			gameObject.SendMessageUpwards ("SpawnMore");
+		}
 	}
 
 	void OnCollisionStay2D(Collision2D other) {

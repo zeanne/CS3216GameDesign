@@ -19,6 +19,8 @@ public class Generator : MonoBehaviour {
 
 	private int environmentDegradation = 0;
 
+	public GameObject envFilter;
+
 	public GameObject enemyPrefab;
  //	public GameObject groundPlane;
 
@@ -43,17 +45,12 @@ public class Generator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-//		Debug.Log (environmentDegradation);
-//		if (instructions.gameObject.activeInHierarchy) {
-//			return;
-//		}
-
 		// increase enemy spawn rate every set number of obstacles player destroys
-		if (environmentDegradation % 5 == 4) {
-			environmentDegradation++;
-			enemiesPerSecond += 0.2f;
-			ResetSpawnEnemyProperties ();
-		}
+//		if (environmentDegradation % 5 == 4) {
+//			environmentDegradation++;
+//			enemiesPerSecond += 0.2f;
+//			ResetSpawnEnemyProperties ();
+//		}
 
 		countdownToNextSpawn -= Time.deltaTime;
 
@@ -124,5 +121,14 @@ public class Generator : MonoBehaviour {
 		}
 			
 		return newPosition;
+	}
+
+	void SpawnMore() {
+		enemiesPerSecond *= 1.5f;
+		ResetSpawnEnemyProperties ();
+
+		Color tempColor = envFilter.GetComponent<SpriteRenderer> ().color;
+		tempColor.a = (tempColor.a + 0.6f) / 2;
+		envFilter.GetComponent<SpriteRenderer> ().color = tempColor;
 	}
 }
