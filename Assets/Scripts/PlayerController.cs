@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void SetUpVariables() {
-		currentFuelAmount = FUEL_AMOUNT_INITIAL;
+		currentFuelAmount = FUEL_AMOUNT_MAX;
 		currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
 		currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
 
@@ -61,6 +61,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update() {
+
+
 //		if (instructions.gameObject.activeInHierarchy && Input.anyKeyDown) {
 //			instructions.gameObject.SetActive (false);
 //		}
@@ -72,10 +74,14 @@ public class PlayerController : MonoBehaviour {
 		if (opacityCurrent < opacitySupposed) {
 			opacityCurrent += 0.01f;
 
-			Color tempColor = pollutionColour.GetComponent<SpriteRenderer> ().color;
-			tempColor.a = opacityCurrent;
-			pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
+		} else if (opacityCurrent > opacitySupposed) {
+			opacityCurrent -= 0.01f;
 		}
+
+		Color tempColor = pollutionColour.GetComponent<SpriteRenderer> ().color;
+		tempColor.a = opacityCurrent;
+		pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
+
 
 		if (gameEnded && Input.GetKeyDown ("r")) {
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
@@ -112,16 +118,17 @@ public class PlayerController : MonoBehaviour {
 
 		if (other.gameObject.CompareTag (TAG_FUEL)) {
 			other.gameObject.SendMessage ("TakeFuel", gameObject, SendMessageOptions.DontRequireReceiver);
-			gameObject.SendMessageUpwards ("SpawnMore");
 		}
 	}
 
 	void OnCollisionStay2D(Collision2D other) {
-		other.gameObject.SendMessage ("TakeDamage", currentAttackRate, SendMessageOptions.DontRequireReceiver);
+		if (other.gameObject.CompareTag (TAG_ENEMY)) {
+			other.gameObject.SendMessage ("TakeDamage", currentAttackRate, SendMessageOptions.DontRequireReceiver);
+		}
 	}
 
 	private void SetFuelBar() {
-		fuelBar.value = currentFuelAmount / FUEL_AMOUNT_INITIAL;
+		fuelBar.value = currentFuelAmount / FUEL_AMOUNT_MAX;
 		if (currentFuelAmount <= 0) {
 			LoseGame ();
 		}
@@ -153,6 +160,28 @@ public class PlayerController : MonoBehaviour {
 	void ReplenishFuel() {
 		currentFuelAmount += FUEL_AMOUNT_REPLENISH;
 		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
+	}
+
+	// Machine Boost
+	void RepairWorld() {
+		opacitySupposed -= 0.2f;
+		opacitySupposed = Mathf.Max (0, opacitySupposed);
+
+		Color tempColor = pollutionColour.GetComponent<SpriteRenderer> ().color;
+		tempColor.a = opacityCurrent;
+		pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
+
+		gameObject.SendMessageUpwards ("SpawnLess");
+	}
+
+	// Machine Boost
+	void IncreaseStrength() {
+		currentAttackRate += 0.3f;
+	}
+
+	// Machine Boost
+	void IncreaseMaxFuel() {
+		FUEL_AMOUNT_MAX += 10f;
 	}
 
 	void AddFuelAndPollution(float fuelAmount) {

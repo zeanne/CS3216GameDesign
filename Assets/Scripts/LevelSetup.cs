@@ -76,7 +76,7 @@ public class LevelSetup : MonoBehaviour {
 		case 0:
 			return new float[] { 2f, 0.4f, 0.025f, 0.5f, 0.1f, 20f, 5f, 20f, 1.5f };
 		case 1: 
-			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 20f, .5f, 20f, 1f };
+			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 20f, 6f, 20f, 1f };
 		case 2:
 			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 10f, 5f, 20f, 2f };
 		default:

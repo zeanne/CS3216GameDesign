@@ -14,6 +14,7 @@ public class FuelController : MonoBehaviour {
 			player.SendMessage ("AddFuelAndPollution", amount);
 			this.GetComponent<SpriteRenderer> ().sprite = disabled;
 
+			player.SendMessageUpwards ("SpawnMore");
 		}
 	}
 }

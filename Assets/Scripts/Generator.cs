@@ -131,6 +131,11 @@ public class Generator : MonoBehaviour {
 	void SpawnMore() {
 		enemiesPerSecond *= 1.5f;
 		ResetSpawnEnemyProperties ();
+	}
 
+	void SpawnLess() {
+		enemiesPerSecond /= (1.5f * 1.5f);
+		enemiesPerSecond = Mathf.Max (enemiesPerSecond, 0.5f);
+		ResetSpawnEnemyProperties ();
 	}
 }
