@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class StartScript : MonoBehaviour {
 
+	public GameObject fadeOutCanvas;
+
 	GameObject[] planets;
 	GameObject startText;
 	GameObject selectText;
@@ -60,6 +62,7 @@ public class StartScript : MonoBehaviour {
 				
 			}
 		}
+
 	}
 
 	void TogglePrev() {
@@ -88,12 +91,17 @@ public class StartScript : MonoBehaviour {
 	void Action() {
 		switch (selected) {
 		case 0:
-			SceneManager.LoadScene ("ReachTheGoal");
+			fadeOutCanvas.SetActive (true);
+			Invoke ("loadNextScene", .5f);
 			break;
 		default :
-			UnityEngine.WSA.Toast.Create("", "Not implemented");
+//			UnityEngine.WSA.Toast.Create("", "Not implemented");
 			break;
 		}
+	}
+
+	void loadNextScene() {
+		SceneManager.LoadScene ("ReachTheGoal");
 	}
 
 }
