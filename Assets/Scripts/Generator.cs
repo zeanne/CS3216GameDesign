@@ -19,8 +19,6 @@ public class Generator : MonoBehaviour {
 
 	private int environmentDegradation = 0;
 
-	public GameObject envFilter;
-
 	public GameObject enemyPrefab;
  //	public GameObject groundPlane;
 
@@ -134,8 +132,5 @@ public class Generator : MonoBehaviour {
 		enemiesPerSecond *= 1.5f;
 		ResetSpawnEnemyProperties ();
 
-		Color tempColor = envFilter.GetComponent<SpriteRenderer> ().color;
-		tempColor.a = (tempColor.a + 0.6f) / 2;
-		envFilter.GetComponent<SpriteRenderer> ().color = tempColor;
 	}
 }

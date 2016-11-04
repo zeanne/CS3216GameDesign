@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
 
 //	public GameObject instructions;
 	public GameObject machineMenuCanvas;
+	public GameObject pollutionColour;
 	public Slider fuelBar;
 
 	private Rigidbody2D rb2d;
@@ -33,12 +34,15 @@ public class PlayerController : MonoBehaviour {
 	public float currentMoveSpeed;
 	public float currentAttackRate;
 
-	private bool gameEnded = false;
+	private bool playerStartsGame;
+	private bool gameEnded;
 	private int enemyCount;
 
+	private float opacitySupposed = 0f;
+	private float opacityCurrent = 0f;
 
 	void Start() {
-		Time.timeScale = 1;
+		Time.timeScale = 0;
 
 		rb2d = GetComponent<Rigidbody2D> ();
 		SetUpVariables ();
@@ -52,6 +56,7 @@ public class PlayerController : MonoBehaviour {
 
 		resultText.text = "";
 		gameEnded = false;
+		playerStartsGame = false;
 		machineMenuCanvas.gameObject.SetActive (false);
 	}
 
@@ -59,6 +64,18 @@ public class PlayerController : MonoBehaviour {
 //		if (instructions.gameObject.activeInHierarchy && Input.anyKeyDown) {
 //			instructions.gameObject.SetActive (false);
 //		}
+		if (!playerStartsGame) {
+			PlayerStartedMoving ();
+			return;
+		}
+
+		if (opacityCurrent < opacitySupposed) {
+			opacityCurrent += 0.01f;
+
+			Color tempColor = pollutionColour.GetComponent<SpriteRenderer> ().color;
+			tempColor.a = opacityCurrent;
+			pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
+		}
 
 		if (gameEnded && Input.GetKeyDown ("r")) {
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
@@ -138,9 +155,11 @@ public class PlayerController : MonoBehaviour {
 		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
 	}
 
-	void AddFuel(float fuelAmount) {
+	void AddFuelAndPollution(float fuelAmount) {
 		currentFuelAmount += fuelAmount;
 		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
+
+		opacitySupposed = (opacitySupposed + 0.8f) / 2;
 
 	}
 
@@ -172,5 +191,19 @@ public class PlayerController : MonoBehaviour {
 		FUEL_AMOUNT_INITIAL = playerValues [5];
 		FUEL_AMOUNT_REPLENISH = playerValues [6];
 		FUEL_AMOUNT_MAX = playerValues [7];
+	}
+
+	bool PlayerStartedMoving() {
+		if  (Input.GetKeyDown(KeyCode.UpArrow)
+			|| Input.GetKeyDown(KeyCode.DownArrow)
+			|| Input.GetKeyDown(KeyCode.LeftArrow)
+			|| Input.GetKeyDown(KeyCode.RightArrow)) {
+
+			Time.timeScale = 1;
+			playerStartsGame = true;
+			return true;
+		}
+
+		return false;
 	}
 }
