@@ -105,8 +105,21 @@ public class PlayerController : MonoBehaviour {
 		currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_STATIONARY;
 
 		if (moveDistance.magnitude != 0) {
-			rb2d.MovePosition (oldPosition + moveDistance);
 			currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_MOVING;
+
+			Vector3 newPosition = (oldPosition + moveDistance);
+			rb2d.transform.position = Vector3.Lerp (oldPosition, newPosition, Time.time);
+
+//			Vector2 force = new Vector2 (moveHorizontal * currentMoveSpeed, moveVertical * currentMoveSpeed);
+//			if (rb2d.velocity.magnitude > 0) {
+//				rb2d.AddForce (force * 0.005f);
+//			} else {
+//				rb2d.AddForce (force * 0.010f);
+//			}
+
+//			rb2d.MovePosition (oldPosition + moveDistance);
+
+
 		}
 	}
 

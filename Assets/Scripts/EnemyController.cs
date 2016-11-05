@@ -14,9 +14,11 @@ public class EnemyController : MonoBehaviour {
 		currentHp = INITIAL_HP;
 		createTime = Time.time;
 		creating = true;
+		GetComponent<PolygonCollider2D> ().enabled = false;
 	}
 
 	void Update () {
+
 		if (Time.time - createTime < 0.5) {
 			Vector3 p = transform.position;
 			p.x -= 2 * Time.deltaTime;
@@ -26,6 +28,10 @@ public class EnemyController : MonoBehaviour {
 			Color c = GetComponent<SpriteRenderer> ().color;
 			c.a = (Time.time - createTime) / 0.85f;
 			GetComponent<SpriteRenderer> ().color = c;
+
+			if (c.a > 0.8) {
+				GetComponent<PolygonCollider2D> ().enabled = true;
+			}
 
 		} else {
 			creating = false;
