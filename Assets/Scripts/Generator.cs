@@ -30,6 +30,7 @@ public class Generator : MonoBehaviour {
 	private string TAG_FINISH = "Finish";
 	private string TAG_FUEL = "Fuel";
 	private string TAG_PLAYER = "Player";
+	private string TAG_MACHINE = "Machine";
 
 	// Use this for initialization
 	void Start () {
@@ -39,6 +40,7 @@ public class Generator : MonoBehaviour {
 		inGameObjects.Add (GameObject.FindGameObjectWithTag (TAG_FINISH));
 		inGameObjects.Add (GameObject.FindGameObjectWithTag (TAG_PLAYER));
 		inGameObjects.AddRange (GameObject.FindGameObjectsWithTag (TAG_FUEL));
+		inGameObjects.AddRange (GameObject.FindGameObjectsWithTag (TAG_MACHINE));
 	}
 	
 	// Update is called once per frame

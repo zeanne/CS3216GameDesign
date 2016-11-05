@@ -12,8 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public Slider fuelBar;
 
 	private Rigidbody2D rb2d;
-
-	public Text resultText;
+	public GameObject gameOverCanvas;
 
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
@@ -30,6 +29,8 @@ public class PlayerController : MonoBehaviour {
 	private static float FUEL_AMOUNT_MAX;
 	private static float FUEL_AMOUNT_REPLENISH;
 
+	public static float highScore;
+
 	public float currentFuelAmount;
 	public float currentMoveSpeed;
 	public float currentAttackRate;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour {
 
 	private float opacitySupposed = 0f;
 	private float opacityCurrent = 0f;
+	private float rotationZ = 0f;
 
 	void Start() {
 		Time.timeScale = 0;
@@ -54,10 +56,10 @@ public class PlayerController : MonoBehaviour {
 		currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
 		currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
 
-		resultText.text = "";
 		gameEnded = false;
 		playerStartsGame = false;
 		machineMenuCanvas.gameObject.SetActive (false);
+		gameOverCanvas.SetActive (false);
 	}
 
 	void Update() {
@@ -83,7 +85,7 @@ public class PlayerController : MonoBehaviour {
 		pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
 
 
-		if (gameEnded && Input.GetKeyDown ("r")) {
+		if (gameEnded && Input.GetKeyDown(KeyCode.Space)) {
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 		}
 	}
@@ -101,26 +103,58 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 oldPosition = transform.position;
 		Vector3 moveDistance = new Vector3 (moveHorizontal * currentMoveSpeed, moveVertical * currentMoveSpeed);
+		Vector3 newPosition = (oldPosition + moveDistance);
 
-		currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_STATIONARY;
+		rb2d.transform.position = Vector3.Lerp (oldPosition, newPosition, Time.time);
 
 		if (moveDistance.magnitude != 0) {
 			currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_MOVING;
-
-			Vector3 newPosition = (oldPosition + moveDistance);
-			rb2d.transform.position = Vector3.Lerp (oldPosition, newPosition, Time.time);
-
-//			Vector2 force = new Vector2 (moveHorizontal * currentMoveSpeed, moveVertical * currentMoveSpeed);
-//			if (rb2d.velocity.magnitude > 0) {
-//				rb2d.AddForce (force * 0.005f);
-//			} else {
-//				rb2d.AddForce (force * 0.010f);
-//			}
-
-//			rb2d.MovePosition (oldPosition + moveDistance);
-
-
+		} else {
+			currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_STATIONARY;
 		}
+
+		Vector3 oldRotation = rb2d.transform.eulerAngles;
+		Vector3 newRotation = rb2d.transform.eulerAngles;
+
+		if (Input.GetKey(KeyCode.RightArrow)) {
+			if (rotationZ == 0) {
+				rotationZ = 355;
+				oldRotation.z = 360;
+				newRotation.z = rotationZ;
+
+			} else if (rotationZ < 180) {
+				newRotation.z = Mathf.Max(rotationZ - 5f, 0);
+				rotationZ = newRotation.z;
+
+			} else {
+				newRotation.z = Mathf.Max (rotationZ - 5f, 330f);
+				rotationZ = newRotation.z;
+			}
+
+		} else if (Input.GetKey(KeyCode.LeftArrow)) {
+			if (rotationZ < 180) {
+				newRotation.z = Mathf.Min (30f, rotationZ + 5f);
+				rotationZ = newRotation.z;
+
+			} else {
+				newRotation.z = Mathf.Min (360, rotationZ + 5);
+				rotationZ = Mathf.Repeat (newRotation.z, 360);
+			}
+
+		} else {
+			if (rotationZ == 0) {
+				return;
+			}
+
+			if (rotationZ < 180) {
+				newRotation.z = rotationZ - 5f;
+			} else {
+				newRotation.z = rotationZ + 5f;
+			}
+			rotationZ = Mathf.Repeat(newRotation.z, 360);
+		}
+
+		rb2d.transform.eulerAngles = Vector3.Lerp (oldRotation, newRotation, Time.time);
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
@@ -148,17 +182,18 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void SetGameEndStatus() {
+		gameOverCanvas.SetActive (true);
 		gameEnded = true;
 		PauseGame ();
 	}
 
 	void LoseGame() {
-		resultText.text = "You lose!\nPress 'r' for replay.";
+//		resultText.text = "You lose!\nPress 'r' for replay.";
 		SetGameEndStatus ();
 	}
 
 	void WinGame() {
-		resultText.text = "You win!\nPress 'r' for replay.";
+//		resultText.text = "You win!\nPress 'r' for replay.";
 		SetGameEndStatus ();
 
 	}

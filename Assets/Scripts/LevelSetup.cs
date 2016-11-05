@@ -76,7 +76,7 @@ public class LevelSetup : MonoBehaviour {
 		case 0:
 			return new float[] { 2f, 0.4f, 0.025f, 0.5f, 0.1f, 20f, 5f, 20f, 1.5f };
 		case 1: 
-			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 20f, 6f, 20f, 1f };
+			return new float[] { 2f, 0.4f, 0.0025f, 1.5f, 0.2f, 20f, 6f, 20f, 1f };
 		case 2:
 			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 10f, 5f, 20f, 2f };
 		default:
@@ -93,16 +93,16 @@ public class LevelSetup : MonoBehaviour {
 		wallsN.transform.localScale = new Vector3 (width, WALL_THICKNESS, 1);
 
 		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
-		wallsS.transform.position = new Vector3 (width/2, 0, 1);
+		wallsS.transform.position = new Vector3 (width/2, 0, 0);
 		wallsS.transform.localScale = new Vector3 (width, -WALL_THICKNESS, 1);
 
-		wallsE.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (WALL_THICKNESS, height);
+		wallsE.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (1, height / 20);
 		wallsE.transform.position = new Vector3 (width, height / 2, 0);
-		wallsE.transform.localScale = new Vector3 (WALL_THICKNESS/2, height, 1);
+		wallsE.transform.localScale = new Vector3 (WALL_THICKNESS, height, 1);
 
-		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (WALL_THICKNESS, height);
+		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (1, height / 20);
 		wallsW.transform.position = new Vector3 (0, height / 2, 0);
-		wallsW.transform.localScale = new Vector3 (WALL_THICKNESS/2, height, 1);
+		wallsW.transform.localScale = new Vector3 (WALL_THICKNESS, height, 1);
 
 	}
 }

@@ -29,11 +29,9 @@ public class EnemyController : MonoBehaviour {
 			c.a = (Time.time - createTime) / 0.85f;
 			GetComponent<SpriteRenderer> ().color = c;
 
-			if (c.a > 0.8) {
-				GetComponent<PolygonCollider2D> ().enabled = true;
-			}
-
 		} else {
+
+			GetComponent<PolygonCollider2D> ().enabled = true;
 			creating = false;
 		}
 
