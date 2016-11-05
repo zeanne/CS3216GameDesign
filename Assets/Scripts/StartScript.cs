@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class StartScript : MonoBehaviour {
 
 	public GameObject fadeOutCanvas;
+	public GameObject storyText;
 
 	GameObject[] planets;
 	GameObject startText;
@@ -15,6 +16,7 @@ public class StartScript : MonoBehaviour {
 	string[] planetText;
 	int selected = 0;
 	bool started = false;
+	bool submenu = false;
 
 	// Use this for initialization
 	void Start () {
@@ -26,12 +28,20 @@ public class StartScript : MonoBehaviour {
 		selectTextBox = GameObject.Find ("SelectTextBox");
 
 		selectTextBox.gameObject.SetActive (false);
+		storyText.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (started) {
+		if (submenu) {
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				selectText.GetComponent<Text>().text = planetText [selected];
+				storyText.SetActive (false);
+				submenu = false;
+			}
+
+		} else if (started) {
 			if (Input.GetKeyDown (KeyCode.Escape)) {
 				started = false;
 				startText.gameObject.SetActive (true);
@@ -41,7 +51,7 @@ public class StartScript : MonoBehaviour {
 				selectTextBox.gameObject.SetActive (false);
 				selectText.GetComponent<Text> ().text = "";
 
-				startText.GetComponent<Text> ().text = "- Press 'Enter' key to start -";
+				startText.GetComponent<Text> ().text = "\n- Press 'Enter' key to start -";
 
 			} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 				TogglePrev ();
@@ -54,7 +64,7 @@ public class StartScript : MonoBehaviour {
 		} else {
 			if (Input.GetKeyDown(KeyCode.Return)) {
 				started = true;
-				startText.GetComponent<Text> ().text = "Navigate with < > arrow keys";
+				startText.GetComponent<Text> ().text = "Navigate with <  > arrow keys\n    Press 'ESC' to return";
 				selectTextBox.gameObject.SetActive (true);
 				ToggleNext ();
 
@@ -94,8 +104,22 @@ public class StartScript : MonoBehaviour {
 			fadeOutCanvas.SetActive (true);
 			Invoke ("loadNextScene", .5f);
 			break;
+		case 1:
+			submenu = true;
+			selectText.GetComponent<Text> ().text = "None available :/";
+			break;
+		case 2: // story
+			selectText.GetComponent<Text> ().text = "";
+			storyText.SetActive (true);
+			submenu = true;
+			break;
+
+		case 3: // credits
+			selectText.GetComponent<Text> ().text = "Thanks\nto us!";
+			submenu = true;
+			break;
+
 		default :
-//			UnityEngine.WSA.Toast.Create("", "Not implemented");
 			break;
 		}
 	}
