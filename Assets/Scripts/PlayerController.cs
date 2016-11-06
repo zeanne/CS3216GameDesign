@@ -219,7 +219,7 @@ public class PlayerController : MonoBehaviour {
 		tempColor.a = opacityCurrent;
 		pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
 
-		gameObject.SendMessageUpwards ("SpawnLess");
+		gameObject.SendMessageUpwards ("SpawnLess", SendMessageOptions.DontRequireReceiver);
 	}
 
 	// Machine Boost

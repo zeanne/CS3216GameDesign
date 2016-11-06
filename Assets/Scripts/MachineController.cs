@@ -11,15 +11,27 @@ public class MachineController : MonoBehaviour {
 	private GameObject player;
 
 	private Button[] machineButtons = new Button[6];
+	private int selected = 0;
 
 	void Start() {
-//		machineMenuCanvas = GameObject.Find ("MachineMenu");
-//		player = GameObject.Find ("Player");
-//		noActionBtn = GameObject.Find ("DoNothingButton").GetComponent<Button> ();
-//		addFuelBtn = GameObject.Find ("ReplenishFuelButton").GetComponent<Button> ();
-//		addSpeedBtn = GameObject.Find ("BoostSpeedButton").GetComponent<Button> ();
-//
-//		AddButtonListeners ();
+		InitialiseMenuObjects ();
+	}
+
+	void Update() {
+		if (machineMenuCanvas.activeInHierarchy) {
+
+			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+				ToggleLeft ();
+			} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
+				ToggleRight ();
+			} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				ToggleVertical ();
+			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
+				ToggleVertical ();
+			} else if (Input.GetKeyDown (KeyCode.Space) || Input.GetKeyDown (KeyCode.Return)) {
+				SelectButton ();
+			}
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
@@ -135,5 +147,119 @@ public class MachineController : MonoBehaviour {
 //
 //		AddButtonListeners ();
 
+	}
+
+	void ToggleVertical() {
+		machineButtons [selected].GetComponent<Outline> ().enabled = false;
+
+		switch (selected) {
+		case 0:
+			selected = 3;
+			break;
+		case 1:
+			selected = 2;
+			break;
+		case 2:
+			selected = 1;
+			break;
+		case 3:
+			selected = 0;
+			break;
+		case 4:
+			selected = 5;
+			break;
+		case 5:
+			selected = 4;
+			break;
+		default:
+			break;
+		}
+
+		machineButtons [selected].GetComponent<Outline> ().enabled = true;
+	}
+
+	void ToggleLeft() {
+		machineButtons [selected].GetComponent<Outline> ().enabled = false;
+
+		switch (selected) {
+		case 0:
+			selected = 4;
+			break;
+		case 1:
+			selected = 3;
+			break;
+		case 2:
+			selected = 0;
+			break;
+		case 3:
+			selected = 5;
+			break;
+		case 4:
+			selected = 2;
+			break;
+		case 5:
+			selected = 1;
+			break;
+		default:
+			break;
+		}
+
+		machineButtons [selected].GetComponent<Outline> ().enabled = true;
+	}
+
+	void ToggleRight() {
+		machineButtons [selected].GetComponent<Outline> ().enabled = false;
+		switch (selected) {
+			case 0:
+			selected = 2;
+			break;
+			case 1:
+			selected = 5;
+			break;
+			case 2:
+			selected = 4;
+			break;
+			case 3:
+			selected = 1;
+			break;
+			case 4:
+			selected = 0;
+			break;
+			case 5:
+			selected = 3;
+			break;
+			default:
+			break;
+		}
+
+		machineButtons [selected].GetComponent<Outline> ().enabled = true;
+	}
+
+	void SelectButton () {
+		closeMachineMenuCanvas ();
+		ResumeGame ();
+
+		switch (selected) {
+		case 0:
+			SendMessageReplenishFuel ();
+			break;
+		case 1:
+			SendMessageIncreaseSpeed ();
+			break;
+		case 2:
+			DestroyRocksOnScreen ();
+			break;
+		case 3:
+			SendMessageRepairWorld ();
+			break;
+		case 4:
+			SendMessageIncreaseStrength ();
+			break;
+		case 5:
+			SendMessageIncreaseMaxFuel ();
+			break;
+		default:
+			break;
+		}
 	}
 }

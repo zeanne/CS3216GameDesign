@@ -39,24 +39,23 @@ public class LevelSetup : MonoBehaviour {
 
 		if (level != 0) {
 			Instantiate (goal, new Vector3 (width - WALL_THICKNESS, Random.Range (WALL_THICKNESS, height - WALL_THICKNESS), 0), Quaternion.identity);
+
+			GameObject newMachine;
+			float i = FLOOR_EXTRA;
+			while (i < width - FLOOR_EXTRA) {
+				newMachine = (GameObject)Instantiate (machinePrefab, new Vector3 (i, WALL_THICKNESS / 2 + MACHINE_HEIGHT, 0), Quaternion.identity);
+				newMachine.SendMessage ("InitialiseMenuObjects");
+				i += MACHINE_DISTANCE;
+			} 
+
+			GameObject newFuel;
+			float j = FLOOR_EXTRA + 30;
+			while (j < width - FLOOR_EXTRA) {
+				newFuel = (GameObject)Instantiate (fuelPrefab, new Vector3 (j, Random.Range (8, 30), 0), Quaternion.identity);
+				j += FUEL_DISTANCE;
+			} 
+			generator.gameObject.SendMessage ("SetInstantiateRange", new Vector4 (FLOOR_EXTRA, width - WALL_THICKNESS, WALL_THICKNESS, height - WALL_THICKNESS / 2), SendMessageOptions.DontRequireReceiver);
 		}
-
-		GameObject newMachine;
-		float i = FLOOR_EXTRA;
-		while (i < width - FLOOR_EXTRA) {
-			newMachine = (GameObject) Instantiate (machinePrefab, new Vector3 (i, WALL_THICKNESS/2 + MACHINE_HEIGHT, 0), Quaternion.identity);
-			newMachine.SendMessage ("InitialiseMenuObjects");
-			i += MACHINE_DISTANCE;
-		} 
-
-		GameObject newFuel;
-		float j = FLOOR_EXTRA + 30;
-		while (j < width - FLOOR_EXTRA) {
-			newFuel = (GameObject) Instantiate (fuelPrefab, new Vector3 (j, Random.Range(8, 30), 0), Quaternion.identity);
-			j += FUEL_DISTANCE;
-		} 
-	
-		generator.gameObject.SendMessage ("SetInstantiateRange", new Vector4(FLOOR_EXTRA, width - WALL_THICKNESS, WALL_THICKNESS, height - WALL_THICKNESS/2), SendMessageOptions.DontRequireReceiver);
 	}
 
 	float[] GetPlayerDefaultValues(int level) {
@@ -74,9 +73,9 @@ public class LevelSetup : MonoBehaviour {
 
 		switch(level) {
 		case 0:
-			return new float[] { 2f, 0.4f, 0.025f, 0.5f, 0.1f, 20f, 5f, 20f, 1.5f };
+			return new float[] { 6f, 0.2f, 0.025f, 1.5f, 0.2f, 20f, 5f, 20f, 1f };
 		case 1: 
-			return new float[] { 2f, 0.4f, 0.0025f, 1.5f, 0.2f, 20f, 6f, 20f, 1f };
+			return new float[] { 6f, 0.4f, 0.0025f, 1.0f, 0.2f, 20f, 6f, 20f, 1f };
 		case 2:
 			return new float[] { 2f, 0.4f, 0.0025f, 1f, 0.2f, 10f, 5f, 20f, 2f };
 		default:
