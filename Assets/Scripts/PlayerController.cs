@@ -6,10 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
-//	public GameObject instructions;
 	public GameObject machineMenuCanvas;
 	public GameObject pollutionColour;
 	public Slider fuelBar;
+	public Text resultText;
+	public Text resultTextTitle;
+	public Text resultTextStat;
 
 	private Rigidbody2D rb2d;
 	public GameObject gameOverCanvas;
@@ -17,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	private string TAG_ENEMY = "Enemy";
 	private string TAG_FINISH = "Finish";
 	private string TAG_FUEL = "Fuel";
-	private string TAG_MACHINE = "Machine";
 
 	private static float CHARACTER_ATTACK_RATE_INITIAL;
 	private static float CHARACTER_MOVE_SPEED_INITIAL;
@@ -25,7 +26,6 @@ public class PlayerController : MonoBehaviour {
 	private static float CHARACTER_MOVE_SPEED_MAX;
 	private static float FUEL_AMOUNT_DEPLETION_MOVING;
 	private static float FUEL_AMOUNT_DEPLETION_STATIONARY;
-	private static float FUEL_AMOUNT_INITIAL;
 	private static float FUEL_AMOUNT_MAX;
 	private static float FUEL_AMOUNT_REPLENISH;
 
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 	public float currentFuelAmount;
 	public float currentMoveSpeed;
 	public float currentAttackRate;
+	private int fuelTaken;
 
 	private bool playerStartsGame;
 	private bool gameEnded;
@@ -65,10 +66,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Update() {
 
-
-//		if (instructions.gameObject.activeInHierarchy && Input.anyKeyDown) {
-//			instructions.gameObject.SetActive (false);
-//		}
 		if (!playerStartsGame) {
 			PlayerStartedMoving ();
 			return;
@@ -108,9 +105,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-//		if (instructions.gameObject.activeInHierarchy) {
-//			return;
-//		}
+
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 
@@ -201,14 +196,17 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void LoseGame() {
-//		resultText.text = "You lose!\nPress 'r' for replay.";
+		resultTextTitle.text = "GAME OVER";
+		resultText.text = "You ran out of fuel";
+		SetResultTextStat ();
 		SetGameEndStatus ();
 	}
 
 	void WinGame() {
-//		resultText.text = "You win!\nPress 'r' for replay.";
+		resultTextTitle.text = "CONGRATULATIONS";
+		resultText.text = "You reached your spaceship!";
+		SetResultTextStat ();
 		SetGameEndStatus ();
-
 	}
 
 	// Machine Boost
@@ -246,6 +244,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void AddFuelAndPollution(float fuelAmount) {
+		fuelTaken++;
 		currentFuelAmount += fuelAmount;
 		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
 
@@ -264,7 +263,7 @@ public class PlayerController : MonoBehaviour {
 		// 2 - CHARACTER_MOVE_SPEED_BOOST, 
 		// 3 - FUEL_AMOUNT_DEPLETION_MOVING,
 		// 4 - FUEL_AMOUNT_DEPLETION_STATIONARY,
-		// 5 - FUEL_AMOUNT_INITIAL,
+		// 5 - FUEL_AMOUNT_INITIAL
 		// 6 - FUEL_AMOUNT_REPLENISH,
 		// 7 - FUEL_AMOUNT_MAX,
 		// 8 - CHARACTER_MOVE_SPEED_MAX
@@ -279,7 +278,6 @@ public class PlayerController : MonoBehaviour {
 		CHARACTER_MOVE_SPEED_MAX = playerValues [8];
 		FUEL_AMOUNT_DEPLETION_MOVING = playerValues [3];
 		FUEL_AMOUNT_DEPLETION_STATIONARY = playerValues [4];
-		FUEL_AMOUNT_INITIAL = playerValues [5];
 		FUEL_AMOUNT_REPLENISH = playerValues [6];
 		FUEL_AMOUNT_MAX = playerValues [7];
 	}
@@ -297,4 +295,10 @@ public class PlayerController : MonoBehaviour {
 
 		return false;
 	}
+
+	void SetResultTextStat () {
+		float percent = 100f * fuelTaken / GameObject.FindGameObjectsWithTag (TAG_FUEL).Length;
+		resultTextStat.text = "Environment Destruction " + percent + "%";
+	}
+
 }

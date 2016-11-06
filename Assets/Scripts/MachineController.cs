@@ -13,10 +13,6 @@ public class MachineController : MonoBehaviour {
 	private Button[] machineButtons = new Button[6];
 	private int selected = 0;
 
-	void Start() {
-//		InitialiseMenuObjects ();
-	}
-
 	void Update() {
 		if (machineMenuCanvas.activeInHierarchy) {
 
@@ -141,12 +137,6 @@ public class MachineController : MonoBehaviour {
 		player = GameObject.Find ("Player");
 
 		SetupButtons ();
-//		noActionBtn = GameObject.Find ("DoNothingButton").GetComponent<Button> ();
-//		addFuelBtn = GameObject.Find ("ReplenishFuelButton").GetComponent<Button> ();
-//		addSpeedBtn = GameObject.Find ("BoostSpeedButton").GetComponent<Button> ();
-//
-//		AddButtonListeners ();
-
 	}
 
 	void ToggleVertical() {

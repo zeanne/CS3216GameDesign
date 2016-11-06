@@ -17,10 +17,7 @@ public class Generator : MonoBehaviour {
 	private float ENEMY_RANGE_Y_MAX;
 	private float SCREENSIZE = 25;
 
-	private int environmentDegradation = 0;
-
 	public GameObject enemyPrefab;
- //	public GameObject groundPlane;
 
 	private List<GameObject> inGameObjects;
 	private int enemySaturation = 0;

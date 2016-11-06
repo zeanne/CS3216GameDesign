@@ -23,10 +23,6 @@ public class LevelSetup : MonoBehaviour {
 	float MACHINE_DISTANCE = 150f;
 	float FUEL_DISTANCE = 50f;
 	float MACHINE_HEIGHT = 2f;
-	float GOAL_HEIGHT = 2f;
-//	float GOAL_WIDTH = 2f;
-
-
 
 //	// Use this for initialization
 	void Start () {
@@ -49,10 +45,9 @@ public class LevelSetup : MonoBehaviour {
 				i += MACHINE_DISTANCE;
 			} 
 
-			GameObject newFuel;
 			float j = FLOOR_EXTRA + 30;
 			while (j < width - FLOOR_EXTRA) {
-				newFuel = (GameObject)Instantiate (fuelPrefab, new Vector3 (j, Random.Range (8, 30), 0), Quaternion.identity);
+				Instantiate (fuelPrefab, new Vector3 (j, Random.Range (8, 30), 0), Quaternion.identity);
 				j += FUEL_DISTANCE;
 			} 
 			generator.gameObject.SendMessage ("SetInstantiateRange", new Vector4 (FLOOR_EXTRA, width - WALL_THICKNESS, WALL_THICKNESS, height - WALL_THICKNESS / 2), SendMessageOptions.DontRequireReceiver);
@@ -92,11 +87,9 @@ public class LevelSetup : MonoBehaviour {
 		floor.transform.position = new Vector3 (width/2, height/2, 1);
 		floor.transform.localScale = new Vector3 (width + FLOOR_EXTRA, height + FLOOR_EXTRA, 1);
 
-//		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
 		wallsN.transform.position = new Vector3 (width/2, height, 0);
 		wallsN.transform.localScale = new Vector3 (width, WALL_THICKNESS, 1);
 
-//		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
 		wallsS.transform.position = new Vector3 (width/2, 0, 0);
 		wallsS.transform.localScale = new Vector3 (2*width, WALL_THICKNESS, 1);
 
