@@ -7,6 +7,7 @@ public class StartScript : MonoBehaviour {
 
 	public GameObject fadeOutCanvas;
 	public GameObject storyText;
+	public GameObject tutorialSkip;
 
 	GameObject[] planets;
 	GameObject startText;
@@ -29,10 +30,27 @@ public class StartScript : MonoBehaviour {
 
 		selectTextBox.gameObject.SetActive (false);
 		storyText.SetActive (false);
+		tutorialSkip.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (tutorialSkip.activeInHierarchy) {
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				tutorialSkip.SetActive (false);
+
+			} else if (Input.GetKeyDown(KeyCode.Return)) {
+				fadeOutCanvas.SetActive (true);
+				Invoke ("loadGameScene", .5f);
+
+			} else if (Input.GetKeyDown(KeyCode.Space)) {
+				fadeOutCanvas.SetActive (true);
+				Invoke ("loadTutorialScene", .5f);
+
+			}
+			return;
+		}
 
 		if (submenu) {
 			if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -101,8 +119,7 @@ public class StartScript : MonoBehaviour {
 	void Action() {
 		switch (selected) {
 		case 0:
-			fadeOutCanvas.SetActive (true);
-			Invoke ("loadNextScene", .5f);
+			tutorialSkip.SetActive (true);
 			break;
 		case 1:
 			submenu = true;
@@ -124,8 +141,13 @@ public class StartScript : MonoBehaviour {
 		}
 	}
 
-	void loadNextScene() {
+	void loadGameScene() {
 		SceneManager.LoadScene ("ReachTheGoal");
 	}
+
+	void loadTutorialScene() {
+		SceneManager.LoadScene ("Tutorial");
+	}
+
 
 }

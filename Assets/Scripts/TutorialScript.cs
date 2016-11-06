@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class TutorialScript : MonoBehaviour {
 
 	GameObject tutText;
-	GameObject player;
 
 	public GameObject enemy;
 	public GameObject fuel;
@@ -20,15 +19,9 @@ public class TutorialScript : MonoBehaviour {
 	bool fadingOut = false;
 	bool fadingIn = false;
 
-	bool sliderText = false;
-	bool obsText = false;
-	bool machineText = false;
-	bool goalText = false;
 
-	// Use this for initialization
 	void Start () {
 		tutText = GameObject.Find ("tutText");
-		player = GameObject.Find ("Player");
 
 		machine = GameObject.FindGameObjectWithTag ("Machine");
 
@@ -81,8 +74,6 @@ public class TutorialScript : MonoBehaviour {
 		} else if (enemy == null && last != null) {
 
 		} else {
-			Debug.Log (last);
-//			Debug.Log ("hide");
 			HideText();
 		}
 	}
