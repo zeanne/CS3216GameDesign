@@ -78,7 +78,7 @@ public class LevelSetup : MonoBehaviour {
 
 		switch(level) {
 		case 0:
-			return new float[] { 6f, 0.2f, 0.025f, 1.0f, 0.2f, 20f, 5f, 20f, 1f };
+			return new float[] { 6f, 0.4f, 0.025f, 0.5f, 0.2f, 20f, 5f, 20f, 1f };
 		case 1: 
 			return new float[] { 6f, 0.4f, 0.0025f, 1.0f, 0.2f, 20f, 6f, 20f, 1f };
 		case 2:

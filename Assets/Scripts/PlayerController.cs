@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour {
 	private static float FUEL_AMOUNT_REPLENISH;
 
 	public static float highScore;
+	public int level;
 
 	public float currentFuelAmount;
 	public float currentMoveSpeed;
@@ -85,8 +86,20 @@ public class PlayerController : MonoBehaviour {
 		pollutionColour.GetComponent<SpriteRenderer> ().color = tempColor;
 
 
-		if (gameEnded && Input.GetKeyDown(KeyCode.Space)) {
-			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+		if (gameEnded && level == 0) {
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				SceneManager.LoadScene ("ReachTheGoal");
+
+			} else if (Input.GetKeyDown(KeyCode.Return)) {
+				SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+			}
+		} else if (gameEnded && level == 1) {
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+
+			} else if (Input.GetKeyDown(KeyCode.Return)) {
+				SceneManager.LoadScene ("Start");
+			}
 		}
 	}
 
