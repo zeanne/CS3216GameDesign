@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Machine Boost
 	void RepairWorld() {
-		opacitySupposed -= 0.2f;
+		opacitySupposed *= 0.75f;
 		opacitySupposed = Mathf.Max (0, opacitySupposed);
 
 		Color tempColor = pollutionColour.GetComponent<SpriteRenderer> ().color;
@@ -236,7 +236,8 @@ public class PlayerController : MonoBehaviour {
 		currentFuelAmount += fuelAmount;
 		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
 
-		opacitySupposed = (opacitySupposed + 0.8f) / 2;
+
+		opacitySupposed = (opacitySupposed + 0.6f) / 2;
 
 	}
 

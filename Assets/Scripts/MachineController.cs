@@ -14,7 +14,7 @@ public class MachineController : MonoBehaviour {
 	private int selected = 0;
 
 	void Start() {
-		InitialiseMenuObjects ();
+//		InitialiseMenuObjects ();
 	}
 
 	void Update() {
@@ -130,7 +130,7 @@ public class MachineController : MonoBehaviour {
 
 		for (int i = enemies.Length - 1; i >= 0; i--) {
 			e = enemies [i];
-			if (e.GetComponent<Renderer>().isVisible) {
+			if (Random.value < 0.9f) {
 				Destroy (e);
 			}
 		}

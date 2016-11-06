@@ -33,17 +33,18 @@ public class LevelSetup : MonoBehaviour {
 
 		SetupPlayingSpace ();
 
-		player.transform.position = new Vector3 (10, 10, 0);
+		player.transform.position = new Vector3 (20, 10, 0);
 		float[] playerValues = GetPlayerDefaultValues (level);
 		player.SendMessage("SetInitialValues", playerValues, SendMessageOptions.RequireReceiver);
 
 		if (level != 0) {
+			player.transform.position = new Vector3 (10, 10, 0);
 			Instantiate (goal, new Vector3 (width - WALL_THICKNESS, Random.Range (WALL_THICKNESS, height - WALL_THICKNESS), 0), Quaternion.identity);
 
 			GameObject newMachine;
 			float i = FLOOR_EXTRA;
 			while (i < width - FLOOR_EXTRA) {
-				newMachine = (GameObject)Instantiate (machinePrefab, new Vector3 (i, WALL_THICKNESS / 2 + MACHINE_HEIGHT, 0), Quaternion.identity);
+				newMachine = (GameObject)Instantiate (machinePrefab, new Vector3 (i, Random.Range (8, 30), 0), Quaternion.identity);
 				newMachine.SendMessage ("InitialiseMenuObjects");
 				i += MACHINE_DISTANCE;
 			} 
@@ -55,6 +56,10 @@ public class LevelSetup : MonoBehaviour {
 				j += FUEL_DISTANCE;
 			} 
 			generator.gameObject.SendMessage ("SetInstantiateRange", new Vector4 (FLOOR_EXTRA, width - WALL_THICKNESS, WALL_THICKNESS, height - WALL_THICKNESS / 2), SendMessageOptions.DontRequireReceiver);
+
+		} else {
+			GameObject newMachine = (GameObject)Instantiate (machinePrefab, new Vector3 (150f, WALL_THICKNESS / 2 + MACHINE_HEIGHT, 0), Quaternion.identity);
+			newMachine.SendMessage ("InitialiseMenuObjects");
 		}
 	}
 
@@ -73,7 +78,7 @@ public class LevelSetup : MonoBehaviour {
 
 		switch(level) {
 		case 0:
-			return new float[] { 6f, 0.2f, 0.025f, 1.5f, 0.2f, 20f, 5f, 20f, 1f };
+			return new float[] { 6f, 0.2f, 0.025f, 1.0f, 0.2f, 20f, 5f, 20f, 1f };
 		case 1: 
 			return new float[] { 6f, 0.4f, 0.0025f, 1.0f, 0.2f, 20f, 6f, 20f, 1f };
 		case 2:
@@ -87,13 +92,13 @@ public class LevelSetup : MonoBehaviour {
 		floor.transform.position = new Vector3 (width/2, height/2, 1);
 		floor.transform.localScale = new Vector3 (width + FLOOR_EXTRA, height + FLOOR_EXTRA, 1);
 
-		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
+//		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
 		wallsN.transform.position = new Vector3 (width/2, height, 0);
 		wallsN.transform.localScale = new Vector3 (width, WALL_THICKNESS, 1);
 
-		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
+//		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (width, WALL_THICKNESS);
 		wallsS.transform.position = new Vector3 (width/2, 0, 0);
-		wallsS.transform.localScale = new Vector3 (width, -WALL_THICKNESS, 1);
+		wallsS.transform.localScale = new Vector3 (2*width, WALL_THICKNESS, 1);
 
 		wallsE.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (1, height / 20);
 		wallsE.transform.position = new Vector3 (width, height / 2, 0);
