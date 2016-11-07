@@ -196,16 +196,22 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void LoseGame() {
-		resultTextTitle.text = "GAME OVER";
-		resultText.text = "You ran out of fuel";
-		SetResultTextStat ();
+		if (level != 0) {
+			resultTextTitle.text = "GAME OVER";
+			resultText.text = "You ran out of fuel";
+			SetResultTextStat ();
+		}
+
 		SetGameEndStatus ();
 	}
 
 	void WinGame() {
-		resultTextTitle.text = "CONGRATULATIONS";
-		resultText.text = "You reached your spaceship!";
-		SetResultTextStat ();
+		if (level != 0) {
+			resultTextTitle.text = "CONGRATULATIONS";
+			resultText.text = "You reached your spaceship!";
+			SetResultTextStat ();
+		}
+
 		SetGameEndStatus ();
 	}
 
