@@ -80,7 +80,7 @@ public class StartScript : MonoBehaviour {
 				selectTextBox.gameObject.SetActive (false);
 				selectText.GetComponent<Text> ().text = "";
 
-				startText.GetComponent<Text> ().text = "\n- Press 'Enter' key to start -";
+				startText.GetComponent<Text> ().text = "Press 'Enter' key to start";
 
 			} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 				TogglePrev ();
@@ -93,7 +93,7 @@ public class StartScript : MonoBehaviour {
 		} else {
 			if (Input.GetKeyDown(KeyCode.Return)) {
 				started = true;
-				startText.GetComponent<Text> ().text = "Navigate with <  > arrow keys\n    Press 'ESC' to return";
+				startText.GetComponent<Text> ().text = "< > to navigate, ESC to return";
 				selectTextBox.gameObject.SetActive (true);
 				ToggleNext ();
 

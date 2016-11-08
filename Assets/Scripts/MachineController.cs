@@ -20,13 +20,15 @@ public class MachineController : MonoBehaviour {
 		if (machineMenuCanvas.activeInHierarchy) {
 
 			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-				ToggleLeft ();
+//				ToggleLeft ();
 			} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
-				ToggleRight ();
+//				ToggleRight ();
 			} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-				ToggleVertical ();
+//				ToggleVertical ();
+				ToggleUp ();
 			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-				ToggleVertical ();
+//				ToggleVertical ();
+				ToggleDown ();
 			} else if (Input.GetKeyDown (KeyCode.Space) || Input.GetKeyDown (KeyCode.Return)) {
 				SelectButton ();
 			}
@@ -257,4 +259,17 @@ public class MachineController : MonoBehaviour {
 			break;
 		}
 	}
+
+	void ToggleUp() {
+		machineButtons [selected].GetComponent<Outline> ().enabled = false;
+		selected = (selected - 1 + 6) % machineButtons.Length;
+		machineButtons [selected].GetComponent<Outline> ().enabled = true;
+	}
+
+	void ToggleDown() {
+		machineButtons [selected].GetComponent<Outline> ().enabled = false;
+		selected = (selected + 1 + 6) % machineButtons.Length;
+		machineButtons [selected].GetComponent<Outline> ().enabled = true;
+	}
+
 }

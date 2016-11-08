@@ -21,7 +21,7 @@ public class Generator : MonoBehaviour {
 
 	private List<GameObject> inGameObjects;
 	private int enemySaturation = 0;
-	private int noEnemy = 0;
+	private float timeNextSpawn = 4f;
 	private int ENEMY_SATURATION_LIMIT = 5;
 
 	private string TAG_FINISH = "Finish";
@@ -60,13 +60,13 @@ public class Generator : MonoBehaviour {
 
 	void CreateNewEnemy() {
 
-		if (noEnemy == 4) {
+		if (timeNextSpawn <= 0) {
+			timeNextSpawn = 4f;
 			enemySaturation = 0;
-			noEnemy = 0;
 		}
 
 		if (enemySaturation == ENEMY_SATURATION_LIMIT) {
-			noEnemy++;
+			timeNextSpawn -= Time.deltaTime;
 			return;
 		}
 
@@ -96,6 +96,7 @@ public class Generator : MonoBehaviour {
 		} else {
 			inGameObjects.Add (newEnemy);
 			enemySaturation = 0;
+			timeNextSpawn = 4f;
 		}
 	}
 

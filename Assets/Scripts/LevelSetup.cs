@@ -95,11 +95,11 @@ public class LevelSetup : MonoBehaviour {
 
 		wallsE.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (1, height / 20);
 		wallsE.transform.position = new Vector3 (width, height / 2, 0);
-		wallsE.transform.localScale = new Vector3 (WALL_THICKNESS, height, 1);
+		wallsE.transform.localScale = new Vector3 (WALL_THICKNESS, height*2, 1);
 
 		wallsW.GetComponent<MeshRenderer> ().material.mainTextureScale = new Vector2 (1, height / 20);
 		wallsW.transform.position = new Vector3 (0, height / 2, 0);
-		wallsW.transform.localScale = new Vector3 (WALL_THICKNESS, height, 1);
+		wallsW.transform.localScale = new Vector3 (WALL_THICKNESS, height*2, 1);
 
 	}
 }
