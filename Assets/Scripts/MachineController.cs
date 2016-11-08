@@ -10,6 +10,9 @@ public class MachineController : MonoBehaviour {
 	private GameObject machineMenuCanvas;
 	private GameObject player;
 
+	public AudioClip destroyRocksSound;
+	public AudioClip addFuelSound;
+
 	private Button[] machineButtons = new Button[6];
 	private int selected = 0;
 
@@ -101,6 +104,7 @@ public class MachineController : MonoBehaviour {
 	}
 
 	void SendMessageReplenishFuel() {
+		AudioSource.PlayClipAtPoint (addFuelSound, player.transform.position);
 		player.SendMessage ("ReplenishFuel");
 	}
 
@@ -121,6 +125,7 @@ public class MachineController : MonoBehaviour {
 	}
 
 	void DestroyRocksOnScreen() {
+		AudioSource.PlayClipAtPoint (destroyRocksSound, player.transform.position);
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemy");
 		GameObject e;
 

@@ -1,11 +1,13 @@
 fileFormatVersion: 2
 guid: a01ec85c62421488b913c4c2300e067b
-timeCreated: 1476297484
+timeCreated: 1478577838
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - sparksPrefab: {fileID: 197494, guid: 8af7fc23449fb134587debd98a00604a, type: 2}
+  - sparksPrefab: {fileID: 197494, guid: ce56f814fa0835a43aba1716e41c3173, type: 2}
+  - destroyRocksSound: {fileID: 8300000, guid: 7b7eccae53abb42c790b2af038b09dfb, type: 3}
+  - addFuelSound: {fileID: 8300000, guid: 83f01c63ed829476e910ee7497dbcc5e, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

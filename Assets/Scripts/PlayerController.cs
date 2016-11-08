@@ -276,16 +276,17 @@ public class PlayerController : MonoBehaviour {
 		currentFuelAmount += fuelAmount;
 		currentFuelAmount = Mathf.Min (FUEL_AMOUNT_MAX, currentFuelAmount);
 
-
 		opacitySupposed = (opacitySupposed + 0.6f) / 2;
 
 	}
 
 	void PauseGame() {
+		gameObject.GetComponent<AudioSource> ().Stop ();
 		Time.timeScale = 0;
 	}
 
 	void ResumeGame() {
+		gameObject.GetComponent<AudioSource> ().Play ();
 		Time.timeScale = 1;
 	}
 

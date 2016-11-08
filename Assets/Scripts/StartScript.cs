@@ -8,6 +8,7 @@ public class StartScript : MonoBehaviour {
 	public GameObject fadeOutCanvas;
 	public GameObject storyText;
 	public GameObject tutorialSkip;
+	public GameObject music;
 
 	GameObject[] planets;
 	GameObject startText;
@@ -18,9 +19,17 @@ public class StartScript : MonoBehaviour {
 	int selected = 0;
 	bool started = false;
 	bool submenu = false;
-
+	static bool musicStarted = false;
 	// Use this for initialization
 	void Start () {
+
+		if (!musicStarted) {
+			DontDestroyOnLoad (music);
+			musicStarted = true;
+		} else {
+			Destroy (music.gameObject);
+		}
+
 		Time.timeScale = 1;
 
 		startText = GameObject.FindGameObjectWithTag ("StartText");
