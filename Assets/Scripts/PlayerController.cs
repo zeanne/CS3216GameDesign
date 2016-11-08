@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
 	public Text resultTextTitle;
 	public Text resultTextStat;
 
+	private GameObject jetPack;
+
 	private Rigidbody2D rb2d;
 	public GameObject gameOverCanvas;
 
@@ -46,11 +48,11 @@ public class PlayerController : MonoBehaviour {
 	private float rotationZ = 0f;
 
 	void Start() {
-		Time.timeScale = 0;
-
 		rb2d = GetComponent<Rigidbody2D> ();
 		SetUpVariables ();
+		Time.timeScale = 0;
 
+		PauseGame ();
 	}
 
 	void SetUpVariables() {
@@ -58,6 +60,7 @@ public class PlayerController : MonoBehaviour {
 		currentMoveSpeed = CHARACTER_MOVE_SPEED_INITIAL;
 		currentAttackRate = CHARACTER_ATTACK_RATE_INITIAL;
 
+		jetPack = transform.Find ("jetpack").gameObject;
 		gameEnded = false;
 		playerStartsGame = false;
 		machineMenuCanvas.gameObject.SetActive (false);
@@ -65,6 +68,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update() {
+
+		jetPack.GetComponent<ParticleSystem> ().Simulate (Time.unscaledTime);
 
 		if (!playerStartsGame) {
 			PlayerStartedMoving ();
@@ -119,12 +124,18 @@ public class PlayerController : MonoBehaviour {
 			currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_MOVING;
 		} else {
 			currentFuelAmount -= Time.deltaTime * FUEL_AMOUNT_DEPLETION_STATIONARY;
+
 		}
 
 		Vector3 oldRotation = rb2d.transform.eulerAngles;
 		Vector3 newRotation = rb2d.transform.eulerAngles;
 
 		if (Input.GetKey(KeyCode.RightArrow)) {
+			Vector3 p = jetPack.GetComponent<ParticleSystem> ().transform.localPosition;
+			p.x = -1.2f;
+			p.y = -2f;
+			jetPack.GetComponent<ParticleSystemRenderer> ().pivot = p;
+
 			if (rotationZ == 0) {
 				rotationZ = 355;
 				oldRotation.z = 360;
@@ -140,6 +151,12 @@ public class PlayerController : MonoBehaviour {
 			}
 
 		} else if (Input.GetKey(KeyCode.LeftArrow)) {
+			Vector3 p = jetPack.GetComponent<ParticleSystem> ().transform.localPosition;
+			p.x = 1.2f;
+			p.y = -2f;
+			jetPack.GetComponent<ParticleSystemRenderer> ().pivot = p;
+//			jetPack.GetComponent<ParticleSystemRenderer>().transform
+
 			if (rotationZ < 180) {
 				newRotation.z = Mathf.Min (30f, rotationZ + 5f);
 				rotationZ = newRotation.z;
@@ -150,6 +167,11 @@ public class PlayerController : MonoBehaviour {
 			}
 
 		} else {
+			Vector3 p = jetPack.GetComponent<ParticleSystem> ().transform.localPosition;
+			p.x = 0;
+			p.y = -2f;
+			jetPack.GetComponent<ParticleSystemRenderer> ().pivot = p;
+
 			if (rotationZ == 0) {
 				return;
 			}
@@ -263,6 +285,10 @@ public class PlayerController : MonoBehaviour {
 		Time.timeScale = 0;
 	}
 
+	void ResumeGame() {
+		Time.timeScale = 1;
+	}
+
 	void SetInitialValues(float[] playerValues) {
 		// 0 - CHARACTER_ATTACK_RATE_INITIAL, 
 		// 1 - CHARACTER_MOVE_SPEED_INITIAL, 
@@ -294,7 +320,7 @@ public class PlayerController : MonoBehaviour {
 			|| Input.GetKeyDown(KeyCode.LeftArrow)
 			|| Input.GetKeyDown(KeyCode.RightArrow)) {
 
-			Time.timeScale = 1;
+			ResumeGame ();
 			playerStartsGame = true;
 			return true;
 		}
