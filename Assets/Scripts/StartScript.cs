@@ -21,6 +21,8 @@ public class StartScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Time.timeScale = 1;
+
 		startText = GameObject.FindGameObjectWithTag ("StartText");
 		selectText = GameObject.FindGameObjectWithTag ("SelectText");
 		planets = GameObject.FindGameObjectsWithTag ("Planet");
